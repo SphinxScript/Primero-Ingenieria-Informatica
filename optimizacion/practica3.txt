@@ -1,0 +1,42 @@
+método build:
+
+abrir el fichero:
+  nombrefichero           ¿el fichero esta abierto?            si no se abre, errorapertura = 1 // paramos
+                          se abre:                                            errorapertura = 0 // continuamos
+                            -->
+
+
+leemos la primera linea:       n, m, esdirigido?                para k = 0 hasta k < m
+                                                                (para cada arista)       // bucle               leemos i, j, c     (i, j "y" c)
+                                                                almacenamos el valor en dummy: dummy.j = j-1
+                                                                                               dummy.c = c
+
+--->
+
+LS[i-1] = push_back(dummy)
+
+me pregunto: ¿es dirigido?
+no:
+  dummy.j = i-1;
+  dummy.c = c;
+  LS[j-1] = push_back(dummy);
+
+sí:
+
+  usamos el nodo dummy para almacenar el valor en él y meter el dato e nla matriz que queramos
+  dummy.j = j-1;
+  dummy.c = c;
+
+  -->
+
+
+  LP[j-1] = push_back(dummy);
+
+
+
+para k = 0 hasta k < m;
+
+fin del bucle -->
+
+cerramos el fichero --> (luego) error apertura toma valor 0
+
