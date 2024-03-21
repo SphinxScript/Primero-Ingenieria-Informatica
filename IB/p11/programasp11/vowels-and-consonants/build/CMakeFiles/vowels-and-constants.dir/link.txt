@@ -1,0 +1,1 @@
+/usr/bin/c++    -rdynamic CMakeFiles/vowels-and-constants.dir/src/vowels-and-consonants.cc.o CMakeFiles/vowels-and-constants.dir/src/main.cc.o  -o vowels-and-constants 

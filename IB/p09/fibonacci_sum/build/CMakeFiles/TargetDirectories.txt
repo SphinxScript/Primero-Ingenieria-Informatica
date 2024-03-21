@@ -1,0 +1,5 @@
+/home/usuario/IB/ib-2023-2024-p09-functions2-alu0101643137/fibonacci_sum/build/CMakeFiles/edit_cache.dir
+/home/usuario/IB/ib-2023-2024-p09-functions2-alu0101643137/fibonacci_sum/build/CMakeFiles/doc.dir
+/home/usuario/IB/ib-2023-2024-p09-functions2-alu0101643137/fibonacci_sum/build/CMakeFiles/rebuild_cache.dir
+/home/usuario/IB/ib-2023-2024-p09-functions2-alu0101643137/fibonacci_sum/build/CMakeFiles/fibonacci_sum.dir
+/home/usuario/IB/ib-2023-2024-p09-functions2-alu0101643137/fibonacci_sum/build/CMakeFiles/tools.dir

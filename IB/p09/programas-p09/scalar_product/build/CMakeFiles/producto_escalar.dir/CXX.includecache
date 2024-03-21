@@ -1,0 +1,26 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/usuario/IB/ib-2023-2024-p09-functions2-alu0101643137/programas-p09/scalar_product/src/main.cc
+iostream
+-
+vector
+-
+scalar_product.h
+/home/usuario/IB/ib-2023-2024-p09-functions2-alu0101643137/programas-p09/scalar_product/src/scalar_product.h
+
+/home/usuario/IB/ib-2023-2024-p09-functions2-alu0101643137/programas-p09/scalar_product/src/scalar_product.cc
+iostream
+-
+vector
+-
+scalar_product.h
+/home/usuario/IB/ib-2023-2024-p09-functions2-alu0101643137/programas-p09/scalar_product/src/scalar_product.h
+
+/home/usuario/IB/ib-2023-2024-p09-functions2-alu0101643137/programas-p09/scalar_product/src/scalar_product.h
+

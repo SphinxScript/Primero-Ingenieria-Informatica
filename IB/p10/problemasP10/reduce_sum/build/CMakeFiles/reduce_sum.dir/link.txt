@@ -1,0 +1,1 @@
+/usr/bin/c++    -rdynamic CMakeFiles/reduce_sum.dir/src/reduce_sum.cc.o CMakeFiles/reduce_sum.dir/src/main.cc.o  -o reduce_sum 

@@ -1,0 +1,28 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/usuario/IB/ib-2023-2024-p09-functions2-alu0101643137/fibonacci_sum/src/fibonacci_main.cc
+iostream
+-
+tools.h
+/home/usuario/IB/ib-2023-2024-p09-functions2-alu0101643137/fibonacci_sum/src/tools.h
+fibonacci_sum.h
+/home/usuario/IB/ib-2023-2024-p09-functions2-alu0101643137/fibonacci_sum/src/fibonacci_sum.h
+
+/home/usuario/IB/ib-2023-2024-p09-functions2-alu0101643137/fibonacci_sum/src/fibonacci_sum.cc
+iostream
+-
+fibonacci_sum.h
+/home/usuario/IB/ib-2023-2024-p09-functions2-alu0101643137/fibonacci_sum/src/fibonacci_sum.h
+
+/home/usuario/IB/ib-2023-2024-p09-functions2-alu0101643137/fibonacci_sum/src/fibonacci_sum.h
+
+/home/usuario/IB/ib-2023-2024-p09-functions2-alu0101643137/fibonacci_sum/src/tools.h
+iostream
+-
+

@@ -1,0 +1,1 @@
+/usr/bin/c++    -rdynamic CMakeFiles/polynomial.dir/src/evaluarpolinomio.cc.o CMakeFiles/polynomial.dir/src/main.cc.o  -o polynomial 

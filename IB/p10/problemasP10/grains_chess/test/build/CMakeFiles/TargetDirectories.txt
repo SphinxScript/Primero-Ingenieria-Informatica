@@ -1,0 +1,4 @@
+/home/usuario/snap/exercism/5/exercism/cpp/grains/build/CMakeFiles/edit_cache.dir
+/home/usuario/snap/exercism/5/exercism/cpp/grains/build/CMakeFiles/rebuild_cache.dir
+/home/usuario/snap/exercism/5/exercism/cpp/grains/build/CMakeFiles/test_grains.dir
+/home/usuario/snap/exercism/5/exercism/cpp/grains/build/CMakeFiles/grains.dir

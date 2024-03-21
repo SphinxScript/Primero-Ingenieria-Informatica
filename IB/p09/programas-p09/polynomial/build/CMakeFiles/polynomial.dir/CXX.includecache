@@ -1,0 +1,18 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/usuario/IB/ib-2023-2024-p09-functions2-alu0101643137/programas-p09/polynomial/src/evaluarpolinomio.h
+
+/home/usuario/IB/ib-2023-2024-p09-functions2-alu0101643137/programas-p09/polynomial/src/main.cc
+iostream
+-
+vector
+-
+evaluarpolinomio.h
+/home/usuario/IB/ib-2023-2024-p09-functions2-alu0101643137/programas-p09/polynomial/src/evaluarpolinomio.h
+

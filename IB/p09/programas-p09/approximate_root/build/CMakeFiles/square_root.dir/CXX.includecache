@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/usuario/IB/ib-2023-2024-p09-functions2-alu0101643137/programas-p09/approximate_root/src/calcular_raiz.cc
+cmath
+-
+calcular_raiz.h
+/home/usuario/IB/ib-2023-2024-p09-functions2-alu0101643137/programas-p09/approximate_root/src/calcular_raiz.h
+
+/home/usuario/IB/ib-2023-2024-p09-functions2-alu0101643137/programas-p09/approximate_root/src/calcular_raiz.h
+
+/home/usuario/IB/ib-2023-2024-p09-functions2-alu0101643137/programas-p09/approximate_root/src/main.cc
+iostream
+-
+calcular_raiz.h
+/home/usuario/IB/ib-2023-2024-p09-functions2-alu0101643137/programas-p09/approximate_root/src/calcular_raiz.h
+

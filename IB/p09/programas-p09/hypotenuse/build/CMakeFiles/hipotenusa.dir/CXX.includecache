@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/usuario/IB/ib-2023-2024-p09-functions2-alu0101643137/programas-p09/hypotenuse/src/hypotenuse.cc
+cmath
+-
+hypotenuse.h
+/home/usuario/IB/ib-2023-2024-p09-functions2-alu0101643137/programas-p09/hypotenuse/src/hypotenuse.h
+
+/home/usuario/IB/ib-2023-2024-p09-functions2-alu0101643137/programas-p09/hypotenuse/src/hypotenuse.h
+
+/home/usuario/IB/ib-2023-2024-p09-functions2-alu0101643137/programas-p09/hypotenuse/src/main.cc
+iostream
+-
+hypotenuse.h
+/home/usuario/IB/ib-2023-2024-p09-functions2-alu0101643137/programas-p09/hypotenuse/src/hypotenuse.h
+

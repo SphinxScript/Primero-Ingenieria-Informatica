@@ -1,0 +1,28 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/usuario/IB/ib-2023-2024-p10-string-array-vector-alu0101643137/problemasP10/reduce_sum/src/main.cc
+vector
+-
+iostream
+-
+iomanip
+-
+reduce_sum.h
+/home/usuario/IB/ib-2023-2024-p10-string-array-vector-alu0101643137/problemasP10/reduce_sum/src/reduce_sum.h
+
+/home/usuario/IB/ib-2023-2024-p10-string-array-vector-alu0101643137/problemasP10/reduce_sum/src/reduce_sum.cc
+reduce_sum.h
+/home/usuario/IB/ib-2023-2024-p10-string-array-vector-alu0101643137/problemasP10/reduce_sum/src/reduce_sum.h
+vector
+-
+
+/home/usuario/IB/ib-2023-2024-p10-string-array-vector-alu0101643137/problemasP10/reduce_sum/src/reduce_sum.h
+vector
+-
+

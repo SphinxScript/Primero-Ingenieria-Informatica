@@ -1,0 +1,1 @@
+/usr/bin/c++    -rdynamic CMakeFiles/square_root.dir/src/calcular_raiz.cc.o CMakeFiles/square_root.dir/src/main.cc.o  -o square_root 

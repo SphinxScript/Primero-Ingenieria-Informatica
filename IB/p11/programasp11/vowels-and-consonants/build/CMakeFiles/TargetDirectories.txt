@@ -1,0 +1,3 @@
+/home/usuario/IB/ib-2023-2024-p11-files-alu0101643137/programasp11/vowels-and-consonants/build/CMakeFiles/rebuild_cache.dir
+/home/usuario/IB/ib-2023-2024-p11-files-alu0101643137/programasp11/vowels-and-consonants/build/CMakeFiles/edit_cache.dir
+/home/usuario/IB/ib-2023-2024-p11-files-alu0101643137/programasp11/vowels-and-consonants/build/CMakeFiles/vowels-and-constants.dir

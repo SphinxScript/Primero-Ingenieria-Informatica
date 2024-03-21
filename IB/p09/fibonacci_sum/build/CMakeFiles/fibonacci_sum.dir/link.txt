@@ -1,0 +1,1 @@
+/usr/bin/c++    -rdynamic CMakeFiles/fibonacci_sum.dir/src/fibonacci_sum.cc.o CMakeFiles/fibonacci_sum.dir/src/fibonacci_main.cc.o  -o fibonacci_sum  ../lib/libtools.a 

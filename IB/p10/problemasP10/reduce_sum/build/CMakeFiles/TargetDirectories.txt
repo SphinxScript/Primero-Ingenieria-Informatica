@@ -1,0 +1,3 @@
+/home/usuario/IB/ib-2023-2024-p10-string-array-vector-alu0101643137/problemasP10/reduce_sum/build/CMakeFiles/rebuild_cache.dir
+/home/usuario/IB/ib-2023-2024-p10-string-array-vector-alu0101643137/problemasP10/reduce_sum/build/CMakeFiles/edit_cache.dir
+/home/usuario/IB/ib-2023-2024-p10-string-array-vector-alu0101643137/problemasP10/reduce_sum/build/CMakeFiles/reduce_sum.dir

@@ -1,0 +1,3 @@
+/home/usuario/IB/ib-2023-2024-p09-functions2-alu0101643137/programas-p09/hypotenuse/build/CMakeFiles/rebuild_cache.dir
+/home/usuario/IB/ib-2023-2024-p09-functions2-alu0101643137/programas-p09/hypotenuse/build/CMakeFiles/edit_cache.dir
+/home/usuario/IB/ib-2023-2024-p09-functions2-alu0101643137/programas-p09/hypotenuse/build/CMakeFiles/hipotenusa.dir
