@@ -31,19 +31,23 @@ template<class T> class pair_t {
   // E/S
   std::istream& read(std::istream& is = std::cin);
   std::ostream& write(std::ostream& os = std::cout) const;
-
+  
+  // atributos
  private:
   T val_;
   int inx_;
 };
 
-
+// constructor por defecto
 template<class T> pair_t<T>::pair_t() : val_(), inx_(-1) {}
 
+// constructor
 template<class T> pair_t<T>::pair_t(T val, int inx) : val_(val), inx_(inx) {}
 
+// destructor
 template<class T> pair_t<T>::~pair_t() {}
 
+// setter
 template<class T> void pair_t<T>::set(T val, int inx) {
   val_ = val;
   inx_ = inx;

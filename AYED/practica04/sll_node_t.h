@@ -31,7 +31,8 @@ template <class T> class sll_node_t {
 
   // E/S
   std::ostream& write(std::ostream& = std::cout) const;
-
+  
+  // atributos
  private:
   T data_;
   sll_node_t<T>* next_;

@@ -47,7 +47,8 @@ template<class T> class vector_t {
   // E/S
   void read(std::istream& = std::cin);
   void write(std::ostream& = std::cout) const;
-
+  
+  // atributos
  private:
   T *v_;
   int sz_;
@@ -56,7 +57,7 @@ template<class T> class vector_t {
   void destroy(void);
 };
 
-
+// constructor
 template<class T> vector_t<T>::vector_t(const int n) : v_(NULL), sz_(n) {
   build();
 }
@@ -76,6 +77,7 @@ template<class T> vector_t<T>& vector_t<T>::operator=(const vector_t<T>& w) {
   return *this;
 }
 
+// destructor
 template<class T> vector_t<T>::~vector_t() {
   destroy();
 }
