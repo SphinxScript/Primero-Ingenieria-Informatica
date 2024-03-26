@@ -50,8 +50,13 @@ bool IsNotZero(const double val, const double eps = EPS) {
 // FASE II
 // constructor
 SllPolynomial::SllPolynomial(const vector_t<double>& v, const double eps) {
-  // poner el código aquí
-  
+  for (int i{v.get_size() - 1}; i >= 0; --i) {
+    if (IsNotZero(v.get_val(i), eps)) {
+      pair_double_t monomio(v.get_val(i), i);
+      SllPolyNode* nodo{new SllPolyNode(monomio)};
+      push_front(nodo);
+    }
+  }
 }
 
 
