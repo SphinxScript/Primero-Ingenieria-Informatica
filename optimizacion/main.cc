@@ -96,10 +96,10 @@ int main(int argc, char *argv[])
 
                 case 'i' :
                     clrscr();
-		    cout << "Grafo cargado desde " << nombrefichero << endl;
+		            cout << "Grafo cargado desde " << nombrefichero << endl;
                     G.Info_Grafo();
                     pressanykey();
-                    clrscr();
+                    //clrscr();
                     break;
 
 		 //Situar aquí el resto de opciones del menú

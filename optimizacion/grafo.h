@@ -37,8 +37,8 @@ class GRAFO
 	unsigned            dirigido;  //0 si el grafo es no dirigido y 1 si es dirigido
 	unsigned            n;         // numero de NODOS
 	unsigned            m;         // numero de ARCOS
-	vector<LA_nodo>     LS;        // Lista de adyacencia de los sucesores: es una matriz dode cada fila posiblemente es posiblemente de distinto tamaño
-	vector<LA_nodo>     LP;        // Lista de adyacencia de los predecesores: es una matriz dode cada fila posiblemente es posiblemente de distinto tamaño
+	vector<LA_nodo>     LS;        // Lista de adyacencia de los sucesores: es una matriz dode cada fila posiblemente es de distinto tamaño
+	vector<LA_nodo>     LP;        // Lista de adyacencia de los predecesores: es una matriz dode cada fila posiblemente es de distinto tamaño
 	vector<LA_nodo>     A;         // Matriz de adyacencia, tanto adyacencia como costes
 	void destroy();                // Destructor del LS, A, y LP, en su caso
 	void build (char nombrefichero[85], int &errorapertura); //Crea LS, A y LP en su caso, desde la lectura del fichero

@@ -38,6 +38,10 @@ void GRAFO :: build (char nombrefichero[85], int &errorapertura)
 		// los nodos internamente se numeran desde 0 a n-1
 		// creamos las n listas de sucesores
 		LS.resize(n);
+        A.resize(n);
+        if (dirigido == 1) {
+            LP.resize(n); // si hay n nodos, la primera dimension de LS y LP tiene n espacios
+        }
         // leemos los m arcos
 		for (k=0;k<m;k++)
         	{
@@ -47,10 +51,22 @@ void GRAFO :: build (char nombrefichero[85], int &errorapertura)
 			//pendiente de hacer un segundo push_back si es no dirigido. O no.
 			//pendiente la construcción de LP, si es dirigido
 			//pendiente del valor a devolver en errorapertura
-			//...
+            dummy.j = j - 1;    // se resta 1 unidad ya que el nodo 1 esta en posicion 0, nodo 2 en posicion 1...
+            if (dirigido == 0) {    // en caso de ser no dirigido, solo trabajamos con LS
+                LS[i - 1].emplace_back(dummy);  // colocamos en la lista el elemento dummy (nodo sucesor y coste)
+                dummy.j = i -1;     // movemos el nodo sucesor
+                if ((i - 1) != (j - 1)) {
+                    LS[j - 1].emplace_back(dummy); // colocamos en la lista el nodo sucesor y el coste.
+                }
+            }
+            if (dirigido == 1) {
+                LS[i - 1].push_back(dummy); //colocamos en la lista el nodo sucesor y el coste
+                dummy.j = i - 1;    // se cambia el nodo predecesor
+                LP[j - 1].emplace_back(dummy);  // colocamos en la lista el nodo predecesor y el coste
+            }
         }
     }
-
+    textfile.close();
 }
 
 GRAFO::~GRAFO()
@@ -73,29 +89,51 @@ void GRAFO:: actualizar (char nombrefichero[85], int &errorapertura)
 
 unsigned GRAFO::Es_dirigido()
 {
-
+    if (dirigido == 0) {
+        return 0;
+    }
+    else return 1;
 }
 
 void GRAFO::Info_Grafo()
 {
-
+    cout << "El grafo tiene esta información: " << endl;
+    cout << "Número de nodos: " << n << endl;
+    cout << "Número de arcos: " << m << endl;
+    cout << "¿Es dirigido?" << (dirigido == 1 ? " Si" : " No") << endl;
+    cout << endl;
 }
 
-void Mostrar_Lista(vector<LA_nodo> L)
+void Mostrar_Lista(vector<LA_nodo> L, unsigned& nodos)
 {
-
+    for (int k{0}; k < nodos; ++k) {
+        cout << "[" << k + 1 << "]";
+        if (L[k].size() == 0) {
+            cout << " : NULL";
+        }
+        for (int i{0}; i < L[i].size(); ++i) {
+            cout << " : " << L[i][k].j << "(" << L[i][k].c << ") ";
+        }
+        cout << endl;
+    }
+    cout << L[0][0].j << endl << endl;
 }
 
 void GRAFO :: Mostrar_Listas (int l)
 {
-
+    if (l == 1 || l == 0) {
+        Mostrar_Lista(LS, n);
+    }
+    if (l == -1) {
+        Mostrar_Lista(LP, n);
+    }
 }
 
 void GRAFO::Mostrar_Matriz() //Muestra la matriz de adyacencia, tanto los nodos adyacentes como sus costes
 {
 
 }
-
+/*
 void GRAFO::dfs_num(unsigned i, vector<LA_nodo>  L, vector<bool> &visitado, vector<unsigned> &prenum, unsigned &prenum_ind, vector<unsigned> &postnum, unsigned &postnum_ind) //Recorrido en profundidad recursivo con recorridos enum y postnum
 {
 	visitado[i] = true;
@@ -188,3 +226,5 @@ void RecorridoAmplitud(); //Construye un recorrido en amplitud desde un nodo ini
 
     // IMPORTANTE: RECORDAR QUE HE RESTADO UNA UNIDAD EN CADA NODO
 }
+
+*/
