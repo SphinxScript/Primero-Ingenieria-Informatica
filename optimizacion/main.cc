@@ -123,8 +123,13 @@ int main(int argc, char *argv[])
                     G.Mostrar_Listas(-1);
                     pressanykey;
                     break;
-
-		 //Situar aquí el resto de opciones del menú
+                
+                case 'r' :
+                    clrscr();
+                    cout << "Haciendo recorrido en profundidad:" << endl;
+                    G.RecorridoProfundidad();
+                    pressanykey();
+                    break;
             }
     }
     while (opcion != 'q');
