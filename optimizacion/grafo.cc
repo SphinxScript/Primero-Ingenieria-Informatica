@@ -111,11 +111,12 @@ void Mostrar_Lista(vector<LA_nodo> L, unsigned& nodos)
         if (L[k].size() == 0) {
             cout << " : NULL";
         }
-        for (int i{0}; i < L[i].size(); ++i) {
-            cout << " : " << L[i][k].j << "(" << L[i][k].c << ") ";
+        for (int i{0}; i < L[k].size(); ++i) {
+            cout << " : " << L[k][i].j << "(" << L[k][i].c << ") ";
         }
         cout << endl;
     }
+    //cout << endl;
     cout << L[0][0].j << endl << endl;
 }
 
