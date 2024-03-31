@@ -130,6 +130,13 @@ int main(int argc, char *argv[])
                     G.RecorridoProfundidad();
                     pressanykey();
                     break;
+
+                case 'm' :
+                    clrscr();
+                    cout << "Haciendo recorrido en amplitud:\n";
+                    G.RecorridoAmplitud();
+                    pressanykey();
+                    break;
             }
     }
     while (opcion != 'q');

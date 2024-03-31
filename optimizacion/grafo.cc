@@ -217,99 +217,52 @@ void GRAFO::bfs_num(	unsigned i, //nodo desde el que realizamos el recorrido en 
     queue<unsigned> cola; //creamos e inicializamos la cola
     cola.push(i);//iniciamos el recorrido desde el nodo i+1
 
-    while (!cola.empty()) //al menos entra una vez al visitar el nodo i+1 y continúa hasta que la cola se vacíe
-    {
+    while (!cola.empty()) {//al menos entra una vez al visitar el nodo i+1 y continúa hasta que la cola se vacíe
         unsigned k = cola.front(); //cogemos el nodo k+1 de la cola
         cola.pop(); //lo sacamos de la cola
         //Hacemos el recorrido sobre L desde el nodo k+1
-        if (pred[k] == i) {
-            d[k] = 1;
-            d[i] = -1;
-        }
-        else {
-            d[k] = d[(pred[k])] + 1;
-        }
-
-        for (unsigned j{0}; j < L[k].size(); j++)
+        for (unsigned j{0}; j < L[k].size(); ++j) {
             //Recorremos todos los nodos u adyacentes al nodo k+1
             //Si el nodo u no está visitado
-            {
-            
-            int vida = L[k][j].j;
-            pred[vida] = k;
-
-            if(visitado[vida] != true) {
-                cola.push(vida);
+            if(visitado[L[k][j].j] == false) {
+                visitado[L[k][j].j] = true;
+                cola.push(L[k][j].j);
+                pred[L[k][j].j] = k;
+                d[L[k][j].j] = d[k] + 1;
                 //Lo visitamos
                 //Lo metemos en la cola
                 //le asignamos el predecesor
                 //le calculamos su etiqueta distancia
             }
-            };
-        visitado[k] = true;
+                
+        }
         //Hemos terminado pues la cola está vacía
     };
-
-
-
 }
 
 void GRAFO::RecorridoAmplitud() //Construye un recorrido en amplitud desde un nodo inicial
 {
-    unsigned nodoinicial{0};
-    std::cout << "nodo inicial introduzca: " << std::endl;
-    std::cin >> (unsigned&)nodoinicial;
+    unsigned i;
+    cout << "Elige un nodo de partida [1-" << n << "]: ";
+    cin >> (unsigned&) i;
+    cout << "Nodo escogido: [" << i << "]" << endl;
     vector<unsigned> pred;
-        vector<unsigned> d;
-    nodoinicial = nodoinicial - 1;
+    pred.resize(n, 0);
+    vector<unsigned> d;
+    d.resize(n, 0);
+    bfs_num(i - 1, LS, pred, d);
 
-    if (dirigido == 1) {
-        bfs_num(nodoinicial, LS, pred, d);
-    }
-    else {
-        bfs_num(nodoinicial, A, pred, d);
-    }
-
-    int tam1 = d.size();
-    int contador = 0;
-    for (int i{0}; i < tam1; ++i) {
-        if (d[i] != 0) {
-            contador = d[i];
-        }
+    cout << "Nodos según distancia al nodo de partida en número de aristas:" << endl;
+    for (int i{0}; i < d.size(); ++i) {
+        cout << "Distancia " << d[i] << " arista(s) : ";
+        cout << i + 1 << endl;
+        
     }
     cout << endl;
-
-    std::cout << "Nodos según distancia al nodo inicial en número de aristas" << std::endl;
-    for (int w{-1}; w < contador + 1; ++w) {
-        if (w == -1) {
-            cout << "Distancia " << 0 << " aristas";
-        }
-        else if (w == 0) {
-            cout;
-        }
-        else {
-            cout << "Distancia " << w << " aristas";
-        }
-        for (int j{0}; j < tam1; ++j) {
-            if (d[j] == w) {
-                cout;
-            }
-            else {
-                cout << " : " <<j + 1;
-            }
-        }
-        if (w == 0) {
-            cout;
-        }
-        else {
-            cout << endl;
-        }
+    cout << "Predecesores de cada nodo" << endl;
+    for(int i{0}; i < pred.size(); ++i) {
+      cout << "Predecesor del nodo " << i + 1 << " : ";
+      cout << pred[i] + 1 << endl;
     }
     cout << endl;
-    cout << "Ramas de conexión en el recorrido: " << endl;
-
-    bfs_num(nodoinicial-1,LS,pred,d); // recorrido amplitud realiza el recorrido en amplitud papu
-    cout << "informacion almacenada en pred y d: " << std::endl;        // imprimir por pantalla la informacion almacenada en pred y d
-
-    // IMPORTANTE: RECORDAR QUE HE RESTADO UNA UNIDAD EN CADA NODO
 }
