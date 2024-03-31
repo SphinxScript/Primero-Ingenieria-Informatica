@@ -18,10 +18,10 @@ void menu (unsigned dirigido, char &opcion)
     if (dirigido == 0) //Grafo no dirigido
             {
             cout << "i. Mostrar [i]nformacion basica del grafo" << endl;
-            cout << "a. Mostrar la lista de [a]dyacencia del grafo" << endl;
-            cout << "y. Mostrar la matriz de adyacencia del grafo" << endl;
+            //cout << "a. Mostrar la lista de [a]dyacencia del grafo" << endl;
+            //cout << "y. Mostrar la matriz de adyacencia del grafo" << endl;
             cout << "m. Realizar un recorrido en amplitud del grafo desde un nodo" << endl;
-            cout << "Realizar un recorrido en profundidad de un grafo desde un nodo" << endl;
+            cout << "r. Realizar un recorrido en profundidad de un grafo desde un nodo" << endl;
 	    //Aquí se añaden más opciones al menú del grafo no dirigido
             }
     else
@@ -29,10 +29,10 @@ void menu (unsigned dirigido, char &opcion)
             cout << "i. Mostrar [i]nformacion basica del grafo" << endl;
             cout << "s. Mostrar la lista de [s]ucesores del grafo" << endl;
             cout << "p. Mostrar la lista de [p]redecesores del grafo" << endl;
-            cout << "y. Mostrar la matriz de ad[y]acencia del grafo" << endl;
+            //cout << "y. Mostrar la matriz de ad[y]acencia del grafo" << endl;
             cout << "m. Realizar un recorrido en a[m]plitud del grafo" << endl;
             cout << "r. Realizar un [r]ecorrido en profundidad del grafo" << endl;
-            cout << "d. caminos mínimos [d]ijkstra" << endl;
+            //cout << "d. caminos mínimos [d]ijkstra" << endl;
             //cout << "d. caminos mínimos" << endl;
 
 	    //Aquí se añaden más opciones al menú del grafo dirigido
