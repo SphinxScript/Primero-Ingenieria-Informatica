@@ -31,9 +31,9 @@ void menu (unsigned dirigido, char &opcion)
             cout << "p. Mostrar la lista de [p]redecesores del grafo" << endl;
             cout << "y. Mostrar la matriz de ad[y]acencia del grafo" << endl;
             cout << "m. Realizar un recorrido en a[m]plitud del grafo" << endl;
-            cout << "r. Realizar un recorrido en profundidad del grafo" << endl;
+            cout << "r. Realizar un [r]ecorrido en profundidad del grafo" << endl;
             cout << "d. caminos mínimos [d]ijkstra" << endl;
-            cout << "d. caminos mínimos" << endl;
+            //cout << "d. caminos mínimos" << endl;
 
 	    //Aquí se añaden más opciones al menú del grafo dirigido
             };

@@ -33,6 +33,7 @@ void GRAFO :: build (char nombrefichero[85], int &errorapertura)
 	textfile.open(nombrefichero);
 	if (textfile.is_open())
     {
+        errorapertura = 0;
 		unsigned i, j, k;
 		// leemos por conversion implicita el numero de nodos, arcos y el atributo dirigido
 		textfile >> (unsigned &) n >> (unsigned &) m >> (unsigned &) dirigido;
@@ -44,7 +45,7 @@ void GRAFO :: build (char nombrefichero[85], int &errorapertura)
             LP.resize(n); // si hay n nodos, la primera dimension de LS y LP tiene n espacios
         }
         // leemos los m arcos
-		for (k=0;k<m;k++)
+		for (k = 0; k < m; k++)
         	{
 			textfile >> (unsigned &) i  >> (unsigned &) j >> (int &) dummy.c;
 			//damos los valores a dummy.j y dummy.c
@@ -53,21 +54,25 @@ void GRAFO :: build (char nombrefichero[85], int &errorapertura)
 			//pendiente la construcción de LP, si es dirigido
 			//pendiente del valor a devolver en errorapertura
             dummy.j = j - 1;    // se resta 1 unidad ya que el nodo 1 esta en posicion 0, nodo 2 en posicion 1...
-            if (dirigido == 0) {    // en caso de ser no dirigido, solo trabajamos con LS
-                LS[i - 1].emplace_back(dummy);  // colocamos en la lista el elemento dummy (nodo sucesor y coste)
-                dummy.j = i -1;     // movemos el nodo sucesor
-                if ((i - 1) != (j - 1)) {
-                    LS[j - 1].emplace_back(dummy); // colocamos en la lista el nodo sucesor y el coste.
-                }
-            }
             if (dirigido == 1) {
                 LS[i - 1].push_back(dummy); //colocamos en la lista el nodo sucesor y el coste
                 dummy.j = i - 1;    // se cambia el nodo predecesor
                 LP[j - 1].emplace_back(dummy);  // colocamos en la lista el nodo predecesor y el coste
             }
+            else {
+                dummy.j = j - 1; // ajusta el indice del nodo destino
+                A[i - 1].push_back(dummy);
+                if (i != j) { // no se añade dos veces el mismo arco en caso de un bucle
+                    dummy.j = i - 1; // ajusta el indice del nodo origen para la dirección inversa
+                    A[j - 1].push_back(dummy);
+                }
+            }
         }
+        textfile.close();
     }
-    textfile.close();
+    else {
+        errorapertura = 1;
+    }
 }
 
 GRAFO::~GRAFO()
@@ -136,15 +141,16 @@ void GRAFO::Mostrar_Matriz() //Muestra la matriz de adyacencia, tanto los nodos 
 
 }
 */
-void GRAFO::dfs_num(unsigned i, const vector<LA_nodo>& L, vector<bool>& visitado, vector<unsigned>& prenum, unsigned& prenum_ind, vector<unsigned>& postnum, unsigned& postnum_ind) {
+void GRAFO::dfs_num(unsigned i, vector<LA_nodo>& L, vector<bool> &visitado, vector<unsigned> &prenum, unsigned &prenum_ind, vector<unsigned> &postnum, unsigned &postnum_ind) {
     visitado[i] = true;
-    prenum[i] = prenum_ind++; // Asignar el orden de visita prenum al nodo i
-    for (unsigned j = 0; j < L[i].size(); ++j) {
+    prenum[prenum_ind++] = i;
+ // Asignar el orden de visita prenum al nodo i
+    for (unsigned j{0}; j < L[i].size(); j++) {
         if (!visitado[L[i][j].j]) {
             dfs_num(L[i][j].j, L, visitado, prenum, prenum_ind, postnum, postnum_ind);
         }
     }
-    postnum[i] = postnum_ind++; // Asignar el orden de visita postnum al nodo i
+    postnum[postnum_ind++] = i;    // Asignar el orden de visita postnum al nodo i
 }
 
 void GRAFO::RecorridoProfundidad()
@@ -154,16 +160,16 @@ void GRAFO::RecorridoProfundidad()
 
     vector<unsigned> prenum;    // inicializamos prenum y postnum
     prenum.resize(n,0); 
-    unsigned prenum_ind{1};     // inicializamos los indices de prenum y postnum
+    unsigned prenum_ind{0};     // inicializamos los indices de prenum y postnum
     vector<unsigned> postnum;
     postnum.resize(n,0);
-    unsigned postnum_ind{1};
+    unsigned postnum_ind{0};
 
     // definimos la variable que almacena el nodo inicial a i
     unsigned i;
 
     // solicitamos el nodo inicial al usuario por pantalla
-    std::cout << " elige nodo de partida: " << endl;
+    std::cout << " elige nodo de partida: " << "[1 - " << n << "]" << endl;
 
     // leer el nodo inicial introducido
 
@@ -173,17 +179,17 @@ void GRAFO::RecorridoProfundidad()
     dfs_num(i,LS,visitado,prenum,prenum_ind,postnum,postnum_ind);
 
     // imprimimos por pantalla prenum y postnum
-    cout << "Prenum: ";
+    cout << "Orden de visita en preorden: ";
     for (int k{0}; k < prenum.size(); ++k) {
-        std::cout << "[" << prenum[k] << "]";
+        std::cout << "[" << prenum[k] + 1 << "]";
         if (!(k + 1 == prenum.size())) {
             cout << " -> ";
         }
     }
     std::cout << endl;
-    cout << "Postnum: ";
+    cout << "Orden de visita en postorden: ";
     for (int k{0}; k < postnum.size(); ++k) {
-        std::cout << "[" << postnum[k] << "]";
+        std::cout << "[" << postnum[k] + 1 << "]";
         if (!(k + 1 == postnum.size())) {
             cout << " -> ";
         }
