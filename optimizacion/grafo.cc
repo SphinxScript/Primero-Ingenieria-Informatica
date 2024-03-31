@@ -118,7 +118,7 @@ void Mostrar_Lista(vector<LA_nodo> L, unsigned& nodos)
         cout << endl;
     }
     //cout << endl;
-    cout << L[0][0].j << endl << endl;
+    //cout << L[0][0].j << endl << endl;
 }
 
 void GRAFO :: Mostrar_Listas (int l)
@@ -136,15 +136,15 @@ void GRAFO::Mostrar_Matriz() //Muestra la matriz de adyacencia, tanto los nodos 
 
 }
 */
-void GRAFO::dfs_num(unsigned i, vector<LA_nodo>  L, vector<bool> &visitado, vector<unsigned> &prenum, unsigned &prenum_ind, vector<unsigned> &postnum, unsigned &postnum_ind) //Recorrido en profundidad recursivo con recorridos enum y postnum
-{
-	visitado[i] = true;
-    prenum[prenum_ind++] = i;//asignamos el orden de visita prenum que corresponde el nodo i
-    for (unsigned j{0}; j<L[i].size(); ++j)
+void GRAFO::dfs_num(unsigned i, const vector<LA_nodo>& L, vector<bool>& visitado, vector<unsigned>& prenum, unsigned& prenum_ind, vector<unsigned>& postnum, unsigned& postnum_ind) {
+    visitado[i] = true;
+    prenum[i] = prenum_ind++; // Asignar el orden de visita prenum al nodo i
+    for (unsigned j = 0; j < L[i].size(); ++j) {
         if (!visitado[L[i][j].j]) {
             dfs_num(L[i][j].j, L, visitado, prenum, prenum_ind, postnum, postnum_ind);
-        };
-    postnum[postnum_ind++] = i;//asignamos el orden de visita posnum que corresponde al nodo i
+        }
+    }
+    postnum[i] = postnum_ind++; // Asignar el orden de visita postnum al nodo i
 }
 
 void GRAFO::RecorridoProfundidad()
@@ -154,13 +154,13 @@ void GRAFO::RecorridoProfundidad()
 
     vector<unsigned> prenum;    // inicializamos prenum y postnum
     prenum.resize(n,0); 
-    unsigned prenum_ind{0};     // inicializamos los indices de prenum y postnum
+    unsigned prenum_ind{1};     // inicializamos los indices de prenum y postnum
     vector<unsigned> postnum;
     postnum.resize(n,0);
-    unsigned postnum_ind{0};
+    unsigned postnum_ind{1};
 
     // definimos la variable que almacena el nodo inicial a i
-    unsigned i{0};
+    unsigned i;
 
     // solicitamos el nodo inicial al usuario por pantalla
     std::cout << " elige nodo de partida: " << endl;
@@ -168,10 +168,28 @@ void GRAFO::RecorridoProfundidad()
     // leer el nodo inicial introducido
 
     std::cin >> (unsigned&)i;
+    --i;    // ajustamos el valor i
 
     dfs_num(i,LS,visitado,prenum,prenum_ind,postnum,postnum_ind);
 
     // imprimimos por pantalla prenum y postnum
+    cout << "Prenum: ";
+    for (int k{0}; k < prenum.size(); ++k) {
+        std::cout << "[" << prenum[k] << "]";
+        if (!(k + 1 == prenum.size())) {
+            cout << " -> ";
+        }
+    }
+    std::cout << endl;
+    cout << "Postnum: ";
+    for (int k{0}; k < postnum.size(); ++k) {
+        std::cout << "[" << postnum[k] << "]";
+        if (!(k + 1 == postnum.size())) {
+            cout << " -> ";
+        }
+    }
+    std::cout << endl << endl;
+    //cout << prenum << postnum << endl;
 
 }
 
