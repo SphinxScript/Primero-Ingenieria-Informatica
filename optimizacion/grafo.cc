@@ -60,7 +60,6 @@ void GRAFO :: build (char nombrefichero[85], int &errorapertura)
                 LP[j - 1].emplace_back(dummy);  // colocamos en la lista el nodo predecesor y el coste
             }
             else {
-                //dummy.j = j - 1; // ajusta el indice del nodo destino
                 LS[i - 1].emplace_back(dummy); //colocamos en la lista el nodo sucesor y el coste
                 dummy.j = i - 1; // cambiamos al nodo predecesor y ajustamos
                 LP[i - 1].emplace_back(dummy);
@@ -138,7 +137,7 @@ void GRAFO::Mostrar_Matriz() //Muestra la matriz de adyacencia, tanto los nodos 
 
 }
 */
-void GRAFO::dfs_num(unsigned i, vector<LA_nodo>& L, vector<bool> &visitado, vector<unsigned> &prenum, unsigned &prenum_ind, vector<unsigned> &postnum, unsigned &postnum_ind) {
+void GRAFO::dfs_num(unsigned& i, vector<LA_nodo>& L, vector<bool> &visitado, vector<unsigned> &prenum, unsigned &prenum_ind, vector<unsigned> &postnum, unsigned &postnum_ind) {
     visitado[i] = true;
     prenum[prenum_ind] = i;
     prenum_ind++;
@@ -203,7 +202,7 @@ void GRAFO::RecorridoProfundidad()
 void GRAFO::bfs_num(	unsigned i, //nodo desde el que realizamos el recorrido en amplitud
 				vector<LA_nodo>  L, //lista que recorremos, LS o LP; por defecto LS
 				vector<unsigned> &pred, //vector de predecesores en el recorrido
-				vector<unsigned> &d) //vector de distancias a nodo i+1
+				vector<unsigned> &distance) //vector de distancias a nodo i+1
 //Recorrido en amplitud con la construcción de pred y d: usamos la cola
 {
     vector<bool> visitado; //creamos e iniciamos el vector visitado
@@ -211,9 +210,9 @@ void GRAFO::bfs_num(	unsigned i, //nodo desde el que realizamos el recorrido en 
     visitado[i] = true;
 
     pred.resize(n, 0); //creamos e inicializamos pred y d
-    d.resize(n, 0);
+    distance.resize(n, 0);
     pred[i] = i;
-    d[i] = 0;
+    distance[i] = 0;
 
     queue<unsigned> cola; //creamos e inicializamos la cola
     cola.push(i);//iniciamos el recorrido desde el nodo i+1
@@ -225,15 +224,11 @@ void GRAFO::bfs_num(	unsigned i, //nodo desde el que realizamos el recorrido en 
         for (unsigned j{0}; j < L[k].size(); ++j) {
             //Recorremos todos los nodos u adyacentes al nodo k+1
             //Si el nodo u no está visitado
-            if(visitado[L[k][j].j] == false) {
-                visitado[L[k][j].j] = true;
-                cola.push(L[k][j].j);
-                pred[L[k][j].j] = k;
-                d[L[k][j].j] = d[k] + 1;
-                //Lo visitamos
-                //Lo metemos en la cola
-                //le asignamos el predecesor
-                //le calculamos su etiqueta distancia
+            if(visitado[L[k][j].j] == false) { 
+                visitado[L[k][j].j] = true; // lo visitamos
+                cola.push(L[k][j].j);       // lo metemos en la cola
+                pred[L[k][j].j] = k;    // asignamos predecesor
+                distance[L[k][j].j] = distance[k] + 1; //le calculamos su etiqueta distancia
             }
                 
         }
@@ -249,13 +244,13 @@ void GRAFO::RecorridoAmplitud() //Construye un recorrido en amplitud desde un no
     cout << "Nodo escogido: [" << i << "]" << endl;
     vector<unsigned> pred;
     pred.resize(n, 0);
-    vector<unsigned> d;
-    d.resize(n, 0);
-    bfs_num(i - 1, LS, pred, d);
+    vector<unsigned> distance;
+    distance.resize(n, 0);
+    bfs_num(i - 1, LS, pred, distance);
 
     cout << "Nodos según distancia al nodo de partida en número de aristas:" << endl;
-    for (int i{0}; i < d.size(); ++i) {
-        cout << "Distancia " << d[i] << " arista(s) : ";
+    for (int i{0}; i < distance.size(); ++i) {
+        cout << "Distancia " << distance[i] << " arista(s) : ";
         cout << i + 1 << endl;
         
     }
@@ -267,3 +262,25 @@ void GRAFO::RecorridoAmplitud() //Construye un recorrido en amplitud desde un no
     }
     cout << endl;
 }
+/*
+void GRAFO::mostrar_nodospriv(vector<LA_nodo>& LS, vector<LA_nodo>& LP) {
+    cout << "Información de nodos (LS): " << endl;
+    for (int i{0}; i < n; ++i) {
+        for (int k{0}; k < LS[i].size(); ++k) {
+            cout << LS[i][k].j << " - ";
+        }
+    }
+    cout << endl << "Información de nodos (LP): " << endl;
+    for (int i{0}; i < n; ++i) {
+        for (int k{0}; k < LP[i].size(); ++k) {
+            cout << LP[i][k].j << " - ";
+        }
+    }
+    cout << endl << endl;
+}
+
+void GRAFO::mostrar_nodos() {
+    mostrar_nodospriv(LS, LP);
+}
+
+*/

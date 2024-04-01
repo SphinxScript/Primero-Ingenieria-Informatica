@@ -42,9 +42,9 @@ class GRAFO
 	vector<LA_nodo>     A;         // Matriz de adyacencia, tanto adyacencia como costes
 	void destroy();                // Destructor del LS, A, y LP, en su caso
 	void build (char nombrefichero[85], int &errorapertura); //Crea LS, A y LP en su caso, desde la lectura del fichero
-	void dfs_num(unsigned i, vector<LA_nodo>&  L, vector<bool> &visitado, vector<unsigned> &prenum, unsigned &prenum_ind, vector<unsigned> &postnum, unsigned &postnum_ind); //Recorrido en profundidad recursivo con recorridos enum y postnum
+	void dfs_num(unsigned& i, vector<LA_nodo>&  L, vector<bool> &visitado, vector<unsigned> &prenum, unsigned &prenum_ind, vector<unsigned> &postnum, unsigned &postnum_ind); //Recorrido en profundidad recursivo con recorridos enum y postnum
   void bfs_num(unsigned i, vector<LA_nodo>  L, vector<unsigned> &pred, vector<unsigned> &d); //Recorrido en amplitud con cálculo de pred y d
-
+	void mostrar_nodospriv(vector<LA_nodo>&, vector<LA_nodo>&);
  public:
      GRAFO(char nombrefichero[], int &errorapertura);
      void actualizar (char nombrefichero[], int &errorapertura);
@@ -55,6 +55,7 @@ class GRAFO
      void RecorridoProfundidad(); //Construye un recorrido en profundidad desde un nodo inicial
      void RecorridoAmplitud(); //Construye un recorrido en amplitud desde un nodo inicial
      ~GRAFO(); //Destructor del objeto grafo
+		 void mostrar_nodos();
 };
 
 #endif
