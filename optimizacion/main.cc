@@ -43,7 +43,7 @@ void menu (unsigned dirigido, char &opcion)
 };
 
 
-void clrscr() {
+void clear() {
   system("clear");
 }
 
@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
 {
     int error_apertura;
     char nombrefichero[85], opcion;
-    clrscr();
+    clear();
     //Si tenemos el nombre del primer fichero por argumento, es una excepcion, y lo intentamos cargar, si no, lo pedimos desde teclado
     if (argc > 1)
     {
@@ -74,20 +74,20 @@ int main(int argc, char *argv[])
     {
         cout << "Error en la apertura del fichero desde argumento: revisa nombre y formato" << endl;
         pressanykey();
-        clrscr();
+        clear();
     }
     else
     {
         cout<< "Grafo cargado desde el fichero " << nombrefichero << endl;
         pressanykey();
-        clrscr();
+        clear();
         do
         {
             menu(G.Es_dirigido(), opcion);
             switch (opcion)
             {
                 case 'c' :
-                    clrscr();
+                    clear();
          	    cout << "Introduce el nombre completo del fichero de datos" << endl;
                     cin >> nombrefichero;
                     G.actualizar(nombrefichero, error_apertura);
@@ -100,39 +100,39 @@ int main(int argc, char *argv[])
                         cout << "Fichero cargado correctamente desde " << nombrefichero << endl;
                     };
                     pressanykey();
-                    clrscr();
+                    clear();
                     break;
 
                 case 'i' :
-                    clrscr();
+                    clear();
 		            cout << "Grafo cargado desde " << nombrefichero << endl;
                     G.Info_Grafo();
                     pressanykey();
-                    //clrscr();
+                    //clear();
                     break;
 
                 case 's' :
-                    clrscr();
+                    clear();
                     cout << "Grafo cargado desde " << nombrefichero << endl;
                     G.Mostrar_Listas(1);
                     pressanykey();
                     break;
                 case 'p' :
-                    clrscr();
+                    clear();
                     cout << "Grafo cargado desde " << nombrefichero << endl;
                     G.Mostrar_Listas(-1);
                     pressanykey;
                     break;
                 
                 case 'r' :
-                    clrscr();
+                    clear();
                     cout << "Haciendo recorrido en profundidad:" << endl;
                     G.RecorridoProfundidad();
                     pressanykey();
                     break;
 
                 case 'm' :
-                    clrscr();
+                    clear();
                     cout << "Haciendo recorrido en amplitud:\n";
                     G.RecorridoAmplitud();
                     pressanykey();

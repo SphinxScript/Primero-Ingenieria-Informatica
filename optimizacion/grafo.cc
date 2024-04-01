@@ -31,8 +31,7 @@ void GRAFO :: build (char nombrefichero[85], int &errorapertura)
     ElementoLista     dummy;
 	ifstream textfile;
 	textfile.open(nombrefichero);
-	if (textfile.is_open())
-    {
+	if (textfile.is_open()) {
         errorapertura = 0;
 		unsigned i, j, k;
 		// leemos por conversion implicita el numero de nodos, arcos y el atributo dirigido
@@ -55,16 +54,16 @@ void GRAFO :: build (char nombrefichero[85], int &errorapertura)
 			//pendiente del valor a devolver en errorapertura
             dummy.j = j - 1;    // se resta 1 unidad ya que el nodo 1 esta en posicion 0, nodo 2 en posicion 1...
             if (dirigido == 1) {
-                LS[i - 1].push_back(dummy); //colocamos en la lista el nodo sucesor y el coste
+                LS[i - 1].emplace_back(dummy); //colocamos en la lista el nodo sucesor y el coste
                 dummy.j = i - 1;    // se cambia el nodo predecesor
                 LP[j - 1].emplace_back(dummy);  // colocamos en la lista el nodo predecesor y el coste
             }
             else {
                 dummy.j = j - 1; // ajusta el indice del nodo destino
-                A[i - 1].push_back(dummy);
+                A[i - 1].emplace_back(dummy);
                 if (i != j) { // no se añade dos veces el mismo arco en caso de un bucle
                     dummy.j = i - 1; // ajusta el indice del nodo origen para la dirección inversa
-                    A[j - 1].push_back(dummy);
+                    A[j - 1].emplace_back(dummy);
                 }
             }
         }
@@ -95,10 +94,7 @@ void GRAFO:: actualizar (char nombrefichero[85], int &errorapertura)
 
 unsigned GRAFO::Es_dirigido()
 {
-    if (dirigido == 0) {
-        return 0;
-    }
-    else return 1;
+    return dirigido;
 }
 
 void GRAFO::Info_Grafo()
