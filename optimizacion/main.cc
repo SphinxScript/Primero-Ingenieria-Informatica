@@ -20,8 +20,8 @@ void menu (unsigned dirigido, char &opcion)
             cout << "i. Mostrar [i]nformacion basica del grafo" << endl;
             //cout << "a. Mostrar la lista de [a]dyacencia del grafo" << endl;
             //cout << "y. Mostrar la matriz de adyacencia del grafo" << endl;
-            cout << "m. Realizar un recorrido en amplitud del grafo desde un nodo" << endl;
-            cout << "r. Realizar un recorrido en profundidad de un grafo desde un nodo" << endl;
+            cout << "m. Realizar un recorrido en a[m]plitud del grafo desde un nodo" << endl;
+            cout << "r. Realizar un [r]ecorrido en profundidad de un grafo desde un nodo" << endl;
 	    //Aquí se añaden más opciones al menú del grafo no dirigido
             }
     else
@@ -113,13 +113,13 @@ int main(int argc, char *argv[])
 
                 case 's' :
                     clear();
-                    cout << "Grafo cargado desde " << nombrefichero << endl;
+                    cout << "Lista de sucesores.\nGrafo cargado desde: " << nombrefichero << endl;
                     G.Mostrar_Listas(1);
                     pressanykey();
                     break;
                 case 'p' :
                     clear();
-                    cout << "Grafo cargado desde " << nombrefichero << endl;
+                    cout << "Lista de predecesores.\nGrafo cargado desde " << nombrefichero << endl;
                     G.Mostrar_Listas(-1);
                     pressanykey;
                     break;

@@ -40,9 +40,10 @@ void GRAFO :: build (char nombrefichero[85], int &errorapertura)
 		// creamos las n listas de sucesores
 		LS.resize(n);
         A.resize(n);
-        if (dirigido == 1) {
+        LP.resize(n);
+        /*if (dirigido == 1) {
             LP.resize(n); // si hay n nodos, la primera dimension de LS y LP tiene n espacios
-        }
+        }*/
         // leemos los m arcos
 		for (k = 0; k < m; k++)
         	{
@@ -54,17 +55,19 @@ void GRAFO :: build (char nombrefichero[85], int &errorapertura)
 			//pendiente del valor a devolver en errorapertura
             dummy.j = j - 1;    // se resta 1 unidad ya que el nodo 1 esta en posicion 0, nodo 2 en posicion 1...
             if (dirigido == 1) {
-                LS[i - 1].emplace_back(dummy); //colocamos en la lista el nodo sucesor y el coste
-                dummy.j = i - 1;    // se cambia el nodo predecesor
+                LS[i - 1].emplace_back(dummy); //colocamos en la lista (en posicion 0) el nodo sucesor y el coste
+                dummy.j = i - 1;    // se cambia al nodo predecesor y se ajusta (i - 1)
                 LP[j - 1].emplace_back(dummy);  // colocamos en la lista el nodo predecesor y el coste
             }
             else {
-                dummy.j = j - 1; // ajusta el indice del nodo destino
-                A[i - 1].emplace_back(dummy);
-                if (i != j) { // no se añade dos veces el mismo arco en caso de un bucle
-                    dummy.j = i - 1; // ajusta el indice del nodo origen para la dirección inversa
-                    A[j - 1].emplace_back(dummy);
-                }
+                //dummy.j = j - 1; // ajusta el indice del nodo destino
+                LS[i - 1].emplace_back(dummy); //colocamos en la lista el nodo sucesor y el coste
+                dummy.j = i - 1; // cambiamos al nodo predecesor y ajustamos
+                LP[i - 1].emplace_back(dummy);
+                //if (i != j) { // no se añade dos veces el mismo arco en caso de un bucle
+                //    dummy.j = i - 1; // ajusta el indice del nodo origen para la dirección inversa
+                //    LS[j - 1].emplace_back(dummy);
+                //}
             }
         }
         textfile.close();
@@ -110,6 +113,7 @@ void Mostrar_Lista(vector<LA_nodo> L, unsigned& nodos)
 {
     for (int k{0}; k < nodos; ++k) {
         cout << "[" << k + 1 << "]";
+        //cout << "Tamaño fila: " << L[k].size() << endl; // prueba para el programador
         if (L[k].size() == 0) {
             cout << " : NULL";
         }
@@ -118,12 +122,9 @@ void Mostrar_Lista(vector<LA_nodo> L, unsigned& nodos)
         }
         cout << endl;
     }
-    //cout << endl;
-    //cout << L[0][0].j << endl << endl;
 }
 
-void GRAFO :: Mostrar_Listas (int l)
-{
+void GRAFO::Mostrar_Listas (int l) {
     if (l == 1 || l == 0) {
         Mostrar_Lista(LS, n); // lista adyacencia para grafos dirigidos y no dirigidos
     }
@@ -139,14 +140,16 @@ void GRAFO::Mostrar_Matriz() //Muestra la matriz de adyacencia, tanto los nodos 
 */
 void GRAFO::dfs_num(unsigned i, vector<LA_nodo>& L, vector<bool> &visitado, vector<unsigned> &prenum, unsigned &prenum_ind, vector<unsigned> &postnum, unsigned &postnum_ind) {
     visitado[i] = true;
-    prenum[prenum_ind++] = i;
+    prenum[prenum_ind] = i;
+    prenum_ind++;
  // Asignar el orden de visita prenum al nodo i
     for (unsigned j{0}; j < L[i].size(); j++) {
-        if (!visitado[L[i][j].j]) {
+        if (visitado[L[i][j].j] == false) {
             dfs_num(L[i][j].j, L, visitado, prenum, prenum_ind, postnum, postnum_ind);
         }
     }
-    postnum[postnum_ind++] = i;    // Asignar el orden de visita postnum al nodo i
+    postnum[postnum_ind] = i;    // Asignar el orden de visita postnum al nodo i
+    postnum_ind++;
 }
 
 void GRAFO::RecorridoProfundidad()
@@ -172,21 +175,23 @@ void GRAFO::RecorridoProfundidad()
     std::cin >> (unsigned&)i;
     --i;    // ajustamos el valor i
 
+    //cout << i << "valor prueba "; test programador
+
     dfs_num(i,LS,visitado,prenum,prenum_ind,postnum,postnum_ind);
 
     // imprimimos por pantalla prenum y postnum
     cout << "Orden de visita en preorden: ";
-    for (int k{0}; k < prenum.size(); ++k) {
+    for (int k{0}; k < prenum_ind; ++k) {
         std::cout << "[" << prenum[k] + 1 << "]";
-        if (!(k + 1 == prenum.size())) {
+        if ((k + 1 != prenum_ind)) {
             cout << " -> ";
         }
     }
     std::cout << endl;
     cout << "Orden de visita en postorden: ";
-    for (int k{0}; k < postnum.size(); ++k) {
+    for (int k{0}; k < postnum_ind; ++k) {
         std::cout << "[" << postnum[k] + 1 << "]";
-        if (!(k + 1 == postnum.size())) {
+        if ((k + 1 != postnum_ind)) {
             cout << " -> ";
         }
     }
