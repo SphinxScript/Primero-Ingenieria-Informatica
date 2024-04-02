@@ -1,3 +1,0 @@
-/home/usuario/Primero-Ingenieria-Informatica/optimizacion/CMakeFiles/rebuild_cache.dir
-/home/usuario/Primero-Ingenieria-Informatica/optimizacion/CMakeFiles/edit_cache.dir
-/home/usuario/Primero-Ingenieria-Informatica/optimizacion/CMakeFiles/grafo.out.dir
