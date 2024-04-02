@@ -202,65 +202,152 @@ void GRAFO::RecorridoProfundidad()
 void GRAFO::bfs_num(	unsigned i, //nodo desde el que realizamos el recorrido en amplitud
 				vector<LA_nodo>  L, //lista que recorremos, LS o LP; por defecto LS
 				vector<unsigned> &pred, //vector de predecesores en el recorrido
-				vector<unsigned> &distance) //vector de distancias a nodo i+1
+				vector<unsigned> &d) //vector de distancias a nodo i+1
 //Recorrido en amplitud con la construcción de pred y d: usamos la cola
 {
     vector<bool> visitado; //creamos e iniciamos el vector visitado
-    visitado.resize(n, false);
+    visitado.resize(n, false);  
     visitado[i] = true;
 
     pred.resize(n, 0); //creamos e inicializamos pred y d
-    distance.resize(n, 0);
+    d.resize(n, 0);
     pred[i] = i;
-    distance[i] = 0;
-
+    d[i] = 0;
+    
+    
     queue<unsigned> cola; //creamos e inicializamos la cola
     cola.push(i);//iniciamos el recorrido desde el nodo i+1
+    
+ 
+    while (!cola.empty()) //al menos entra una vez al visitar el nodo i+1 y continúa hasta que la cola se vacíe
+    {   
 
-    while (!cola.empty()) {//al menos entra una vez al visitar el nodo i+1 y continúa hasta que la cola se vacíe
         unsigned k = cola.front(); //cogemos el nodo k+1 de la cola
         cola.pop(); //lo sacamos de la cola
         //Hacemos el recorrido sobre L desde el nodo k+1
-        for (unsigned j{0}; j < L[k].size(); ++j) {
+        
+        if(pred[k] == i){ // Asignamos la distancia de los nodos respecto a la i, utilizando la lista de sucesores
+            d[k] = 1;
+            d[i] = -1; // El nodo inicial le ponemos distancia -1 para diferenciar de los que no tienen conexión que poseerían distancia 0
+
+        } else {
+            d[k] = d[(pred[k])] + 1; 
+        }
+
+        for (unsigned j=0;j<L[k].size();j++){
             //Recorremos todos los nodos u adyacentes al nodo k+1
             //Si el nodo u no está visitado
-            if(visitado[L[k][j].j] == false) { 
-                visitado[L[k][j].j] = true; // lo visitamos
-                cola.push(L[k][j].j);       // lo metemos en la cola
-                pred[L[k][j].j] = k;    // asignamos predecesor
-                distance[L[k][j].j] = distance[k] + 1; //le calculamos su etiqueta distancia
+
+            int vida = L[k][j].j;
+
+            pred[vida] = k; // Asignamos su predecesor
+
+            if(visitado[vida] != true){ // Si no está visitado lo añadimos a la cola
+                cola.push(vida);
             }
-                
+
+            //Lo visitamos
+            //Lo metemos en la cola
+            //le asignamos el predecesor
+            //le calculamos su etiqueta distancia
+
         }
+        visitado[k] = true; // Lo ponemos como visitado
+
         //Hemos terminado pues la cola está vacía
-    };
+
+    }
+
 }
 
-void GRAFO::RecorridoAmplitud() //Construye un recorrido en amplitud desde un nodo inicial
-{
-    unsigned i;
-    cout << "Elige un nodo de partida [1-" << n << "]: ";
-    cin >> (unsigned&) i;
-    cout << "Nodo escogido: [" << i << "]" << endl;
+void GRAFO::RecorridoAmplitud(){ //Construye un recorrido en amplitud desde un nodo inicial
+    int NodoInicial = 0;
+    std::cout << "¿Elija nodo de partida? [1-" << n << "] ";
+    std::cin >> NodoInicial;
     vector<unsigned> pred;
-    pred.resize(n, 0);
-    vector<unsigned> distance;
-    distance.resize(n, 0);
-    bfs_num(i - 1, LS, pred, distance);
+	vector<unsigned> d;
+    NodoInicial = NodoInicial - 1;
+    
+    if(dirigido == 1){
+        bfs_num(NodoInicial, LS, pred, d);
+    } else {
 
-    cout << "Nodos según distancia al nodo de partida en número de aristas:" << endl;
-    for (int i{0}; i < distance.size(); ++i) {
-        cout << "Distancia " << distance[i] << " arista(s) : ";
-        cout << i + 1 << endl;
+        bfs_num(NodoInicial, A, pred, d);
+    }
+    
+
+    // Nodos según distancia al nodo inicial en número de aristas
+
+    int tam1 = d.size();
+    int contador = 0;  // = d[tam1-1];
+    for(int i = 0; i < tam1; i++){
+        if(d[i] != 0 ){
+            contador = d[i];
+        }
+    }
+    std::cout << std::endl;
+
+
+    std::cout << "Nodos según distancia al nodo inicial en número de aristas" << std::endl;
+    for(int w = -1; w < contador+1; w++){ // Imprimimos las distancias
+        //std::cout << " w vale " << w << std::endl;
+        if(w == -1){ // El nodo inicial i
+            std::cout << "Distancia " << 0 << " aristas";
+        } else if(w == 0){ // Nodos que no conectan al nodo i
+            std::cout;
+        } else {
+            std::cout << "Distancia " << w << " aristas";
+        }
+
+        for(int j = 0; j < tam1; j++){
+            if(d[j] == w){
+                if (w == 0){
+                    std::cout;
+                } else{
+                    std::cout << " : " << j+1;
+                }
+
+            }
+        }
+        if (w == 0){
+            std::cout;
+        } else{
+            std::cout << std::endl;
+        }
+    }
+    
+    std::cout << std::endl;
+    std::cout << "Ramas de conexión en el recorrido" << std::endl;
+    int b = 0, j;
+
+    for(int i = 0; i < n; i++){
+        j = i;
+        if(d[i] == 0 || d[i] == -1){
+            std::cout;
+        } else {
+            b = 0;
+            vector<unsigned> predAlReves(pred.size());
+            predAlReves[b] = pred[j];
+            while(j != NodoInicial){ // Recorremos toda la lista de predecesores y lo metemos en el vector predAlReves
+
+                j = pred[j];
+                b++;
+                predAlReves[b] = pred[j];
+            }
         
+
+            b = b -1;            
+            for(int u = b; u >= 0; u = u - 1){
+                std::cout << predAlReves[u]+1 << " - ";
+            }
+            
+            std::cout << i+1 << std::endl; 
+
+        }
     }
-    cout << endl;
-    cout << "Predecesores de cada nodo" << endl;
-    for(int i{0}; i < pred.size(); ++i) {
-      cout << "Predecesor del nodo " << i + 1 << " : ";
-      cout << pred[i] + 1 << endl;
-    }
-    cout << endl;
+
+
+
 }
 /*
 void GRAFO::mostrar_nodospriv(vector<LA_nodo>& LS, vector<LA_nodo>& LP) {
