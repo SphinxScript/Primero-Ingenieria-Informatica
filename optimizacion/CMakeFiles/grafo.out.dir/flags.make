@@ -6,5 +6,5 @@ CXX_FLAGS =   -Wall -Wextra -Wpedantic -Weffc++ -std=gnu++17
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/usuario/Primero-Ingenieria-Informatica/optimizacion/src 
+CXX_INCLUDES = -I/home/usuario/Primero-Ingenieria-Informatica/optimizacion 
 

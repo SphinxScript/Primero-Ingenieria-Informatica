@@ -1,8 +1,8 @@
 file(REMOVE_RECURSE
   "CMakeFiles/grafo.out.dir/grafo.cc.o"
   "CMakeFiles/grafo.out.dir/main.cc.o"
-  "build/grafo.out"
-  "build/grafo.out.pdb"
+  "grafo.out"
+  "grafo.out.pdb"
 )
 
 # Per-language clean rules from dependency scanning.

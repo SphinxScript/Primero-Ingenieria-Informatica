@@ -29,14 +29,14 @@ set(CMAKE_CXX_STANDARD 17)      	# Use c++17
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # tell cmake to output binaries here:
-set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/build)
+set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR})
 
 # Debug and release flags
 set(CMAKE_CXX_FLAGS_DEBUG "-g -O0 -Wall -Wextra -Wpedantic -Weffc++")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
 # tell cmake where to look for *.h files
-include_directories(${PROJECT_SOURCE_DIR}/src)
+include_directories(${PROJECT_SOURCE_DIR})
 
 # Adds an executable target called "grafo.out" to be built from the source files listed in the command invocation.
 add_executable(grafo.out

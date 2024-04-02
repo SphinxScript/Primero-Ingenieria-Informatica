@@ -25,7 +25,7 @@ void GRAFO :: destroy()
 	A.clear();
 
 }
-
+ 
 void GRAFO :: build (char nombrefichero[85], int &errorapertura)
 {
     ElementoLista     dummy;
@@ -117,7 +117,7 @@ void Mostrar_Lista(vector<LA_nodo> L, unsigned& nodos)
             cout << " : NULL";
         }
         for (int i{0}; i < L[k].size(); ++i) {
-            cout << " : " << L[k][i].j << "(" << L[k][i].c << ") ";
+            cout << " : " << L[k][i].j + 1 << "(" << L[k][i].c << ") ";
         }
         cout << endl;
     }
@@ -143,8 +143,9 @@ void GRAFO::dfs_num(unsigned& i, vector<LA_nodo>& L, vector<bool> &visitado, vec
     prenum_ind++;
  // Asignar el orden de visita prenum al nodo i
     for (unsigned j{0}; j < L[i].size(); j++) {
-        if (visitado[L[i][j].j] == false) {
-            dfs_num(L[i][j].j, L, visitado, prenum, prenum_ind, postnum, postnum_ind);
+        unsigned nodo{L[i][j].j};
+        if (visitado[nodo] == false) {
+            dfs_num(nodo, L, visitado, prenum, prenum_ind, postnum, postnum_ind);
         }
     }
     postnum[postnum_ind] = i;    // Asignar el orden de visita postnum al nodo i
@@ -179,24 +180,44 @@ void GRAFO::RecorridoProfundidad()
     dfs_num(i,LS,visitado,prenum,prenum_ind,postnum,postnum_ind);
 
     // imprimimos por pantalla prenum y postnum
-    cout << "Orden de visita en preorden: ";
-    for (int k{0}; k < prenum_ind; ++k) {
-        std::cout << "[" << prenum[k] + 1 << "]";
-        if ((k + 1 != prenum_ind)) {
-            cout << " -> ";
+    if (dirigido == 1) {
+        cout << "Orden de visita en preorden: ";
+        for (int k{0}; k < prenum_ind; ++k) {
+            std::cout << "[" << prenum[k] + 1 << "]";
+            if ((k + 1 != prenum_ind)) {
+                cout << " -> ";
+            }
         }
-    }
-    std::cout << endl;
-    cout << "Orden de visita en postorden: ";
-    for (int k{0}; k < postnum_ind; ++k) {
-        std::cout << "[" << postnum[k] + 1 << "]";
-        if ((k + 1 != postnum_ind)) {
-            cout << " -> ";
+        std::cout << endl;
+        cout << "Orden de visita en postorden: ";
+        for (int k{0}; k < postnum_ind; ++k) {
+            std::cout << "[" << postnum[k] + 1 << "]";
+            if ((k + 1 != postnum_ind)) {
+                cout << " -> ";
+            }
         }
+        std::cout << endl << endl;
+        //cout << prenum << postnum << endl;
     }
-    std::cout << endl << endl;
-    //cout << prenum << postnum << endl;
-
+    else {
+        cout << "Orden de visita en preorden: ";
+        for (int k{0}; k < prenum_ind; ++k) {
+            std::cout << "[" << prenum[k] + 1 << "]";
+            if ((k + 1 != prenum_ind)) {
+                cout << " -> ";
+            }
+        }
+        std::cout << endl;
+        cout << "Orden de visita en postorden: ";
+        for (int k{0}; k < postnum.size(); ++k) {
+            std::cout << "[" << postnum[k] + 1 << "]";
+            if ((k + 1 != postnum.size())) {
+                cout << " -> ";
+            }
+        }
+        std::cout << endl << endl;
+        //cout << prenum << postnum << endl;
+    }
 }
 
 void GRAFO::bfs_num(	unsigned i, //nodo desde el que realizamos el recorrido en amplitud

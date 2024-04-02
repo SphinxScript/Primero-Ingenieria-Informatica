@@ -1,1 +1,1 @@
-/usr/bin/c++    -rdynamic CMakeFiles/grafo.out.dir/main.cc.o CMakeFiles/grafo.out.dir/grafo.cc.o  -o build/grafo.out 
+/usr/bin/c++    -rdynamic CMakeFiles/grafo.out.dir/main.cc.o CMakeFiles/grafo.out.dir/grafo.cc.o  -o grafo.out 

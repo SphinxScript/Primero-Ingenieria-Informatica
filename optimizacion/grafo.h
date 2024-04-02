@@ -57,5 +57,5 @@ class GRAFO
      ~GRAFO(); //Destructor del objeto grafo
 		 void mostrar_nodos();
 };
-
 #endif
+ 
