@@ -17,6 +17,7 @@ using namespace std;
 
 int main()
 {
+  system("clear");
   vector_t<double> v1, v2, v3;
   cin >> v1 >> v2 >> v3;
   cout << "v1= " << v1;
