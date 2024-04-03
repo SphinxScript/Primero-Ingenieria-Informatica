@@ -63,8 +63,7 @@ template<class T> vector_t<T>::vector_t(const int n) : v_(NULL), sz_(n) {
 }
 
 // constructor de copia
-template<class T> vector_t<T>::vector_t(const vector_t<T>& w)
-    : v_(NULL), sz_(0) {
+template<class T> vector_t<T>::vector_t(const vector_t<T>& w) : v_(NULL), sz_(0) {
   *this = w; // se invoca directamente al operator=
 }
 
