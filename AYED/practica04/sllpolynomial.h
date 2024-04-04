@@ -18,6 +18,8 @@
 #include "sll_t.h"
 #include "vector_t.h"
 
+using namespace std;
+
 #define EPS 1.0e-6
 
 typedef pair_t<double> pair_double_t;  // Campo data_ de SllPolynomial
@@ -40,6 +42,9 @@ class SllPolynomial : public sll_t<pair_double_t> {
   double Eval(const double) const;
   bool IsEqual(const SllPolynomial&, const double = EPS) const;
   void Sum(const SllPolynomial&, SllPolynomial&, const double = EPS);
+
+  // modificacion
+  double modif() const;
 };
 
 
@@ -146,6 +151,23 @@ void SllPolynomial::Sum(const SllPolynomial& sllpol, SllPolynomial& sllpolsum, c
       sllpolsum.push_front(new SllPolyNode(pair_double_t(coef, inx)));
     }
   }
+}
+
+double SllPolynomial::modif() const {
+  SllPolyNode* aux = get_head();
+  int inx{0};
+  double coef{0};
+
+  while(aux != NULL) {
+    coef = aux->get_data().get_val();
+    inx = aux->get_data().get_inx();
+    //cout << "\nprueba: " << inx << endl;
+    if (fabs(inx % 2) < EPS && inx >= EPS && inx != 1) {
+      return coef;
+    }
+    aux = aux->get_next();
+  }
+  return -10.0;
 }
 
 

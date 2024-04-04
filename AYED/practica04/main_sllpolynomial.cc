@@ -73,5 +73,10 @@ int main()
   sllp2.Sum(sllp3, sllpsum23);
   cout << "sllp2 + sllp3= " << sllpsum23;
 
+  // modificacion
+  cout << endl << "modificacion" << endl;
+  cout << "sllp1: " << sllp1.modif() << endl;
+  cout << "sllp2: " << sllp2.modif() << endl;
+  cout << "sllp3: " << sllp3.modif() << endl;
   return 0;
 }
