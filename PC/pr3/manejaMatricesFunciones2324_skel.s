@@ -123,3 +123,159 @@ str_valMin:	.asciiz	"\nEl valor minimo esta en ("
 str_conValor:	.asciiz	") con valor "
 
 str_matTiene:	.asciiz	"\n\nLa matriz tiene dimension "
+
+endl:		.asciiz "\n"
+
+
+#variables a registros:
+
+
+	.text
+
+print_mat:
+
+	move	$s0,$a0		# muevo a s0 la direccion de matriz
+
+	lw	$s1,0($s0)	# $s1 guarda el nº de filas
+	lw	$s2,4($s0)	# $s2 guarda el nº de columnas
+
+	li	$v0,1
+	move	$a0,$s1
+	syscall			# imprimo n_filas
+
+	li	$v0,11
+	li	$a0,'x'
+	syscall			# imprimo 'x'
+	
+	li	$v0,1
+	move	$a0,$s2
+	syscall			# imprimo n_col
+
+	li	$v0,4
+	la	$a0,endl
+	syscall			# imprimo salto de linea
+	
+	beq	$s1,$zero,fin_print
+	beq	$s2,$zero,fin_print	# si columnas o filas son 0, se acaba el bucle print_mat
+
+	addiu	$s3,$s0,8		# en $s3 almaceno la direccion de inicio del primer dato de la matriz
+
+	move	$s4,$zero		# cargo en s4 y s5 valores 0, para ir aumentando y asi usarlos de contador
+	move	$s5,$zero		# para saber cuando acaba la columna, la fila y la matriz
+
+print_bucle1:
+	
+	beq	$s4,$s2,print_bucle2	# comprobamos si n_col es igual al numero de columnas de la matriz, en tal caso saltamos al bucle 2 para seguir por la siguiente fila
+
+	l.s	$f4,0($s3)	# almacenamos en $f4 el primer dato de la matriz
+	addiu	$s3,$s3,4	# movemos al siguiente dato de la matriz
+	li	$v0,2		# imprimimos por pantalla el dato de la matriz
+	mov.s	$f12,$f4	# imprimimos por pantalla el dato de la matriz
+	syscall
+
+	li	$v0,11
+	li	$a0,' '
+	syscall			# imprimo un espacio para separar los numeros
+	
+	addiu	$s4,$s4,1		# sumo 1 al contador de columnas
+	blt	$s4,$s2,print_bucle1	# si el contador es menor que el numero de columnas, sigue imprimiendo datos
+
+	j	print_bucle2		# en otro caso salta a print_bucle2 para continuar con las siguientes filas
+
+	
+	
+	j fin_print
+
+print_bucle2:
+
+	li	$v0,4			
+	la	$a0,endl
+	syscall				# se imprime un salto de linea
+	
+	move	$s4,$zero		# se recarga el contador de columnas a 0 (estamos en nueva fila)
+
+	addiu	$s5,$s5,1		# se aumenta el contador de filas
+	blt	$s5,$s1,print_bucle1	# si el contador de filas es menor que el total de filas de la matriz, se salta a bucle 1. en otro caso se finaliza la impresion de la misma
+	
+fin_print:
+
+	jr	$ra			# volvemos a la funcion
+
+main:
+	
+	li	$v0,4
+	la	$a0,str_titulo
+	syscall				# imprimimos el titulo
+
+while_inicio:
+	
+	li	$v0,4
+	la	$a0,str_menu
+	syscall				# imprimimos el menu de opciones
+
+	li	$v0,5
+	syscall
+	move	$s0,$v0			# leemos el entero introducido y lo movemos a $s0
+
+	beq	$v0,$zero,while_fin	# si v0 es igual a 0 salta a fin del bucle
+
+	beq	$s0,1,cambia_matr
+	
+cambia_matr:
+	
+	li	$v0,4
+	la	$a0,str_elijeMat	# imprimimos eligemat
+	syscall
+
+	li	$v0,5
+	syscall
+	move	$t0,$v0			# leemos el entero
+
+	blt	$t0,1,error_numero
+	bgt	$t0,6,error_numero	# si es mayor que 6 o menor que 1 salta a erorr_numero
+
+	move	$s0,$t0
+	beq	$s0,1,menu_mat1		# movemos el dato de t0 a s0
+
+menu_mat1:
+	la	$a0,mat1	# almaceno en a0 la direccion de mat1
+	jal	print_mat	# salto a print_mat
+	j	while_inicio	# salto al inicio del while
+
+menu_mat2:
+	la	$a0,mat2
+	jal	print_mat
+	j	while_inicio
+
+menu_mat3:
+	la	$a0,mat3
+	jal	print_mat
+	j	while_inicio
+	
+menu_mat4:
+	la	$a0,mat4
+	jal	print_mat
+	j	while_inicio
+
+menu_mat5:
+	la	$a0,mat5
+	jal	print_mat
+	j	while_inicio
+
+menu_mat6:
+	la	$a0,mat6
+	jal	print_mat
+	j	while_inicio
+
+error_numero:
+
+	li	$v0,4
+	la	$a0,str_errorOpc
+	syscall
+
+while_fin:
+
+
+	li	$v0,10
+	syscall
+
