@@ -134,26 +134,38 @@ endl:		.asciiz "\n"
 
 print_mat:
 
-	move	$s0,$a0		# muevo a s0 la direccion de matriz
+					# manejo de la pila:
+	addi	$sp,$sp,-36
+	sw	$s0,0($sp)
+	sw	$s1,4($sp)
+	sw	$s2,8($sp)
+	sw	$s3,12($sp)
+	sw	$s4,16($sp)
+	sw	$s5,20($sp)
+	sw	$s6,24($sp)
+	sw	$s7,28($sp)
+	sw	$ra,32($sp)
 
-	lw	$s1,0($s0)	# $s1 guarda el nº de filas
-	lw	$s2,4($s0)	# $s2 guarda el nº de columnas
+	move	$s0,$a0			# muevo a s0 la direccion de matriz
+
+	lw	$s1,0($s0)		# $s1 guarda el nº de filas
+	lw	$s2,4($s0)		# $s2 guarda el nº de columnas
 
 	li	$v0,1
 	move	$a0,$s1
-	syscall			# imprimo n_filas
+	syscall				# imprimo n_filas
 
 	li	$v0,11
 	li	$a0,'x'
-	syscall			# imprimo 'x'
+	syscall				# imprimo 'x'
 	
 	li	$v0,1
 	move	$a0,$s2
-	syscall			# imprimo n_col
+	syscall				# imprimo n_col
 
 	li	$v0,4
 	la	$a0,endl
-	syscall			# imprimo salto de linea
+	syscall				# imprimo salto de linea
 	
 	beq	$s1,$zero,fin_print
 	beq	$s2,$zero,fin_print	# si columnas o filas son 0, se acaba el bucle print_mat
@@ -167,15 +179,15 @@ print_bucle1:
 	
 	beq	$s4,$s2,print_bucle2	# comprobamos si n_col es igual al numero de columnas de la matriz, en tal caso saltamos al bucle 2 para seguir por la siguiente fila
 
-	l.s	$f4,0($s3)	# almacenamos en $f4 el primer dato de la matriz
-	addiu	$s3,$s3,4	# movemos al siguiente dato de la matriz
-	li	$v0,2		# imprimimos por pantalla el dato de la matriz
-	mov.s	$f12,$f4	# imprimimos por pantalla el dato de la matriz
+	l.s	$f4,0($s3)		# almacenamos en $f4 el primer dato de la matriz
+	addiu	$s3,$s3,4		# movemos al siguiente dato de la matriz
+	li	$v0,2			# imprimimos por pantalla el dato de la matriz
+	mov.s	$f12,$f4		# imprimimos por pantalla el dato de la matriz
 	syscall
 
 	li	$v0,11
 	li	$a0,' '
-	syscall			# imprimo un espacio para separar los numeros
+	syscall				# imprimo un espacio para separar los numeros
 	
 	addiu	$s4,$s4,1		# sumo 1 al contador de columnas
 	blt	$s4,$s2,print_bucle1	# si el contador es menor que el numero de columnas, sigue imprimiendo datos
@@ -199,13 +211,50 @@ print_bucle2:
 	
 fin_print:
 
+	li	$v0,4
+	la	$a0,endl		# imprime salto de linea
+	syscall
+
+	lw	$ra,32($sp)
+	lw	$s7,28($sp)
+	lw	$s6,24($sp)
+	lw	$s5,20($sp)
+	lw	$s4,16($sp)
+	lw	$s3,12($sp)
+	lw	$s2,8($sp)
+	lw	$s1,4($sp)
+	lw	$s0,0($sp)
+	addi	$sp,$sp,32
+
 	jr	$ra			# volvemos a la funcion
+
+change_elto:
+
+	move	$t1,$s1			# s1 almacena la direccion de las filas de la matriz (primer dato de la struct)
+	mul	$t1,$t1,4
+	mul	$t0,$s0,$t1
+
+	sw	$t2,4($s1)
+	mul	$t3,$t3,4
+	mul	$t4,$s2,$t3
+
+	add	$t5,$t0,$t4
+
+	sw	$t4,0($s3)
+
+	jal	print_mat
+
+	j	while_inicio
 
 main:
 	
 	li	$v0,4
 	la	$a0,str_titulo
 	syscall				# imprimimos el titulo
+
+	la	$a0,mat1
+	move	$s1,$a0			# almaceno en s1 la direccion de la matriz 1
+	j	menu_mat1
 
 while_inicio:
 	
@@ -219,7 +268,8 @@ while_inicio:
 
 	beq	$v0,$zero,while_fin	# si v0 es igual a 0 salta a fin del bucle
 
-	beq	$s0,1,cambia_matr
+	beq	$s0,1,cambia_matr	# si v0 es igual a 1 salta a cambia_matr
+	beq	$s0,3,menu_elto		# si v0, es igual a 2 salta a menu_elto
 	
 cambia_matr:
 	
@@ -237,43 +287,117 @@ cambia_matr:
 	move	$s0,$t0
 	beq	$s0,1,menu_mat1		# movemos el dato de t0 a s0
 
+	beq	$s0,1,menu_mat1
+	beq	$s0,2,menu_mat2
+	beq	$s0,3,menu_mat3
+	beq	$s0,4,menu_mat4
+	beq	$s0,5,menu_mat5
+	beq	$s0,6,menu_mat6
+
 menu_mat1:
-	la	$a0,mat1	# almaceno en a0 la direccion de mat1
-	jal	print_mat	# salto a print_mat
-	j	while_inicio	# salto al inicio del while
+	la	$a0,mat1		# almaceno en a0 la direccion de mat1
+	move	$s1,$a0
+	jal	print_mat		# salto a print_mat
+	j	while_inicio		# salto al inicio del while
 
 menu_mat2:
 	la	$a0,mat2
+	move	$s1,$a0
 	jal	print_mat
 	j	while_inicio
 
 menu_mat3:
 	la	$a0,mat3
+	move	$s1,$a0
 	jal	print_mat
 	j	while_inicio
 	
 menu_mat4:
 	la	$a0,mat4
+	move	$s1,$a0
 	jal	print_mat
 	j	while_inicio
 
 menu_mat5:
 	la	$a0,mat5
+	move	$s1,$a0
 	jal	print_mat
 	j	while_inicio
 
 menu_mat6:
 	la	$a0,mat6
+	move	$s1,$a0
 	jal	print_mat
 	j	while_inicio
 
 error_numero:
 
 	li	$v0,4
-	la	$a0,str_errorOpc
+	la	$a0,endl		# imprimimos un salto de linea
 	syscall
 
+	li	$v0,4
+	la	$a0,str_errorOpc	# imprimimos error de opcion
+	syscall
+
+	j	cambia_matr		# volvemos a elegir matriz
+
+menu_elto:
+
+	li	$v0,4
+	la	$a0,str_indFila		# imprimimos leer indice fila
+	syscall
+
+	li	$v0,5
+	syscall
+	move	$s0,$v0			# cambio a s0 el indice de la fila
+
+	blt	$s0,$zero,error_fila	# si es menor que 0 salta a error_fila
+
+	li	$v0,4
+	la	$a0,str_indCol		# imprimimos leer indice columna
+	syscall
+
+	li	$v0,5
+	syscall
+	move	$s2,$v0			# cambio a s2 el indice de la columna
+
+	lw	$s2,0($s1)		# guardamos el valor del nº de columnas en s2
+	bge	$s0,$s1,error_colum	# si es mayor que el número de columnas salta a error_colum
+
+	li	$v0,4
+	la	$a0,str_nuevoValor	# imprimimos leer nuevo valor
+	syscall
+
+	li	$v0,6
+	syscall
+	move	$f20,$f0			#leemos nuevo valor y lo almacenamos en f20
+
+	j	change_elto		# saltamos a change_elto
+
+	
+
+error_fila:
+
+	li	$v0,4
+	la	$a0,str_errorFil
+	syscall
+
+	j	while_inicio
+
+error_colum:
+
+	li	$v0,4
+	la	$a0,str_errorCol
+	syscall
+
+	j	while_inicio
+
 while_fin:
+
+	li	$v0,4
+	la	$a0,str_termina
+	syscall
 
 
 	li	$v0,10
