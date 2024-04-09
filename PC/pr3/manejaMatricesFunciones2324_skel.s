@@ -129,6 +129,7 @@ endl:		.asciiz "\n"
 
 #variables a registros:
 
+	# $s1		-> matriz con la que se trabaja
 
 	.text
 
@@ -230,21 +231,83 @@ fin_print:
 
 change_elto:
 
-	move	$t1,$s1			# s1 almacena la direccion de las filas de la matriz (primer dato de la struct)
-	mul	$t1,$t1,4
-	mul	$t0,$s0,$t1
+	move	$t0,$s0			# muevo el indice de la fila al registro t0 (de s0 a t0)
+	move	$t1,$s2			# muevo el nindice de la columna al registro t1 (de s2 a t1)
 
-	sw	$t2,4($s1)
-	mul	$t3,$t3,4
-	mul	$t4,$s2,$t3
+	# f20 almacena el nuevo valor a reemplazar
 
-	add	$t5,$t0,$t4
+	addi	$t2,$s1,8		# almaceno en t2 la direccion de inicio de la matriz
 
-	sw	$t4,0($s3)
+	lw	$t4,4($s1)		# guardo en t4 el nº de columnas de la matriz
+					# la matriz se encuentra indexada de 0 a n-1
 
-	jal	print_mat
+	mul	$t3,$t4,$t0		# multiplicamos nº columnas * indice de fila y guardamos en t3
+	add	$t3,$t3,$t1		# sumamos t3 y el indice de columna y almacenamos en t3
+	mul	$t3,$t3,sizeF		# multiplicamos por 4, ya que cada elemento ocupa 4 bytes
+	add	$t3,$t3,$t2		# se suma el desplazamiento obtenido a la direccion de inicio de la matriz
 
-	j	while_inicio
+	s.s	$f20,0($t3)		# se reemplaza el elemento
+	jr	$ra			# se vuelve al punto donde se estaba
+
+intercambia:
+
+	lw	$t0,4($s1)		# almacenamos en t0 el nº de columnas
+	lw	$t1,0($s1)		# almaceno en t1 el nº de filas
+
+	addi	$t2,$s1,8		# almaceno en t2 la direccion de inicio de la matriz
+
+	mul	$t3,$s0,$t0		# multiplico la fila dada del usuario por el nº de columnas de la matriz
+	add	$t3,$t3,$s2		# sumo la multiplicacion anterior con el indice de columna dada por el usuario	(desplazamiento de e1)
+	mul	$t3,$t3,sizeF		# multiplico por 4 para saber la posicion dentro de la matriz del elemento	(direccion relativa en la memoria de e1)
+	add	$t3,$t3,$t2		# hallo la direccion en memoria de ese dato
+	l.s	$f21,0($t3)		# muevo el dato al registro f21
+
+	sub	$t4,$t1,$s0		# resto nº filas - indFila dada por el usuario (t4 = nº filas - infFila)
+	addi	$t4,-1			# resto al nº anterior 1 unidad ($t4 = $t4 - 1)
+	mul	$t4,$t4,$t0		# multiplico por el nº de columnas
+
+	# uso t5 como variable para realizar operaciones intermedias:
+
+	sub	$t5,$t0,$s2		# numCol - indC
+	addi	$t5,-1			# numCol - indC - 1
+
+	add	$t4,$t4,$t5		# (numFil - indF - 1) * numCol + (numCol - indC - 1)
+	mul	$t4,$t4,sizeF		# se multiplica por 4 por los desplazamientos en la memoria
+	add	$t4,$t4,$t2		# se halla la direccion de memoria del dato
+	l.s	$f22,0($t4)		# se almacena en $f22
+
+	# como se llama a otra funcion desde esta, se maneja el puntero de pila para el registro ra
+	addi	$sp,$sp,-4
+	sw	$ra,0($sp)
+
+	move	$a0,$t3			# a0 = t3
+	move	$a1,$t4			# a1 = t4
+	jal	swap
+
+	# se reajusta el registro sp y ra
+	lw	$ra,0($sp)
+	addi	$sp,$sp,4
+
+	jr	$ra
+
+swap:
+
+	move	$t0,$a0			# t0 = a0
+	move	$t1,$a1			# t1 = a1
+
+	l.s	$f4,0($t0)		# f4 = [0(t0)]
+	l.s	$f5,0($t1)		# f5 = [0(t1)]
+
+	mov.s	$f6,$f4			# f6 = f4
+	mov.s	$f7,$f5			# f7 = f5
+
+	mov.s	$f5,$f4			# f5 = f4
+	mov.s	$f4,$f7			# f4 = f6
+
+	s.s	$f5,0($t0)		# [0(t0)] = f5
+	s.s	$f4,0($t1)		# [0(t1)] = f4
+	
+	jr	$ra
 
 main:
 	
@@ -252,9 +315,12 @@ main:
 	la	$a0,str_titulo
 	syscall				# imprimimos el titulo
 
-	la	$a0,mat1
-	move	$s1,$a0			# almaceno en s1 la direccion de la matriz 1
-	j	menu_mat1
+	la	$s1,mat1		# almaceno en a0 la direccion de la matriz 1
+
+antes_inicio:
+
+	move	$a0,$s1			# muevo a s1 la direccion de mat1
+	jal	print_mat		# salto a print_mat
 
 while_inicio:
 	
@@ -264,12 +330,13 @@ while_inicio:
 
 	li	$v0,5
 	syscall
-	move	$s0,$v0			# leemos el entero introducido y lo movemos a $s0
+	move	$s5,$v0			# leemos el entero introducido y lo movemos a $s5
 
-	beq	$v0,$zero,while_fin	# si v0 es igual a 0 salta a fin del bucle
+	beq	$s5,$zero,while_fin	# si s5 es igual a 0 salta a fin del bucle
 
-	beq	$s0,1,cambia_matr	# si v0 es igual a 1 salta a cambia_matr
-	beq	$s0,3,menu_elto		# si v0, es igual a 2 salta a menu_elto
+	beq	$s5,1,cambia_matr	# si s0 es igual a 1 salta a cambia_matr
+	beq	$s5,3,menu_elto		# si s0 es igual a 3 salta a menu_elto
+	beq	$s5,4,menu_elto		# si s0 es igual a 4 salta a menu_elto, alli se llama luego a la funcion swap
 	
 cambia_matr:
 	
@@ -296,7 +363,7 @@ cambia_matr:
 
 menu_mat1:
 	la	$a0,mat1		# almaceno en a0 la direccion de mat1
-	move	$s1,$a0
+	move	$s1,$a0			# muevo a s1 la direccion
 	jal	print_mat		# salto a print_mat
 	j	while_inicio		# salto al inicio del while
 
@@ -350,9 +417,12 @@ menu_elto:
 
 	li	$v0,5
 	syscall
-	move	$s0,$v0			# cambio a s0 el indice de la fila
+	move	$s0,$v0			# muevo a s0 el indice de la fila
 
 	blt	$s0,$zero,error_fila	# si es menor que 0 salta a error_fila
+
+	lw	$s3,0($s1)		# cargo en s3 el nº de filas
+	bge	$s0,$s3,error_fila	# si el nº introducido es mayor que el nº de filas, salta a error_fila
 
 	li	$v0,4
 	la	$a0,str_indCol		# imprimimos leer indice columna
@@ -362,8 +432,14 @@ menu_elto:
 	syscall
 	move	$s2,$v0			# cambio a s2 el indice de la columna
 
-	lw	$s2,0($s1)		# guardamos el valor del nº de columnas en s2
-	bge	$s0,$s1,error_colum	# si es mayor que el número de columnas salta a error_colum
+	blt	$s2,$zero,error_colum	# si es menor que 0 el indice de columna salta a error colum
+
+	lw	$s4,4($s1)		# guardamos el valor del nº de columnas en s4
+	bge	$s2,$s4,error_colum	# si es mayor que el número de columnas salta a error_colum
+
+	# aqui se comprueba si el valor introducido en el menu es 4, y si es asi se llama a la funcion swap
+	li	$t0,4
+	beq	$t0,$s5,llama_swap
 
 	li	$v0,4
 	la	$a0,str_nuevoValor	# imprimimos leer nuevo valor
@@ -371,10 +447,10 @@ menu_elto:
 
 	li	$v0,6
 	syscall
-	move	$f20,$f0			#leemos nuevo valor y lo almacenamos en f20
+	mov.s	$f20,$f0		#leemos nuevo valor y lo almacenamos en f20
 
-	j	change_elto		# saltamos a change_elto
-
+	jal	change_elto		# saltamos a change_elto
+	j	antes_inicio
 	
 
 error_fila:
@@ -392,6 +468,11 @@ error_colum:
 	syscall
 
 	j	while_inicio
+
+llama_swap:
+
+	jal	intercambia
+	j	antes_inicio
 
 while_fin:
 
