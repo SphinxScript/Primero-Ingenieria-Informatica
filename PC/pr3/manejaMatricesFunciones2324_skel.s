@@ -129,7 +129,7 @@ endl:		.asciiz "\n"
 
 #variables a registros:
 
-	# $s1		-> matriz con la que se trabaja
+	# $s1		-> direccion de la matriz con la que se trabaja
 
 	.text
 
@@ -231,8 +231,8 @@ fin_print:
 
 change_elto:
 
-	move	$t0,$s0			# muevo el indice de la fila al registro t0 (de s0 a t0)
-	move	$t1,$s2			# muevo el nindice de la columna al registro t1 (de s2 a t1)
+	move	$t0,$a0			# muevo el indice de la fila al registro t0 (de a0 a t0)
+	move	$t1,$a1			# muevo el nindice de la columna al registro t1 (de a1 a t1)
 
 	# f20 almacena el nuevo valor a reemplazar
 
@@ -254,34 +254,38 @@ intercambia:
 	lw	$t0,4($s1)		# almacenamos en t0 el nº de columnas
 	lw	$t1,0($s1)		# almaceno en t1 el nº de filas
 
+	move	$t3,$a0			# muevo a t3 el indice de fila del usuario
+	move	$t4,$a1			# muevo a t4 el indice de columna del usuario
+
 	addi	$t2,$s1,8		# almaceno en t2 la direccion de inicio de la matriz
 
-	mul	$t3,$s0,$t0		# multiplico la fila dada del usuario por el nº de columnas de la matriz
-	add	$t3,$t3,$s2		# sumo la multiplicacion anterior con el indice de columna dada por el usuario	(desplazamiento de e1)
-	mul	$t3,$t3,sizeF		# multiplico por 4 para saber la posicion dentro de la matriz del elemento	(direccion relativa en la memoria de e1)
-	add	$t3,$t3,$t2		# hallo la direccion en memoria de ese dato
-	l.s	$f21,0($t3)		# muevo el dato al registro f21
+	mul	$t5,$t3,$t0		# multiplico la fila dada del usuario por el nº de columnas de la matriz
+	add	$t5,$t5,$t4		# sumo la multiplicacion anterior con el indice de columna dada por el usuario	(desplazamiento de e1)
+	mul	$t5,$t5,sizeF		# multiplico por 4 para saber la posicion dentro de la matriz del elemento	(direccion relativa en la memoria de e1)
+	add	$t5,$t5,$t2		# hallo la direccion en memoria de ese dato
+	l.s	$f21,0($t5)		# muevo el dato al registro f21
 
-	sub	$t4,$t1,$s0		# resto nº filas - indFila dada por el usuario (t4 = nº filas - infFila)
-	addi	$t4,-1			# resto al nº anterior 1 unidad ($t4 = $t4 - 1)
-	mul	$t4,$t4,$t0		# multiplico por el nº de columnas
+	sub	$t6,$t1,$t3		# resto nº filas - indFila dada por el usuario (t4 = nº filas - infFila)
+	addi	$t6,-1			# resto al nº anterior 1 unidad ($t4 = $t4 - 1)
+	mul	$t6,$t6,$t0		# multiplico por el nº de columnas
 
 	# uso t5 como variable para realizar operaciones intermedias:
 
-	sub	$t5,$t0,$s2		# numCol - indC
-	addi	$t5,-1			# numCol - indC - 1
+	sub	$t7,$t0,$t4		# numCol - indC
+	addi	$t7,-1			# numCol - indC - 1
 
-	add	$t4,$t4,$t5		# (numFil - indF - 1) * numCol + (numCol - indC - 1)
-	mul	$t4,$t4,sizeF		# se multiplica por 4 por los desplazamientos en la memoria
-	add	$t4,$t4,$t2		# se halla la direccion de memoria del dato
-	l.s	$f22,0($t4)		# se almacena en $f22
+	add	$t6,$t6,$t7		# (numFil - indF - 1) * numCol + (numCol - indC - 1)
+	mul	$t6,$t6,sizeF		# se multiplica por 4 por los desplazamientos en la memoria
+	add	$t6,$t6,$t2		# se halla la direccion de memoria del dato
+	l.s	$f22,0($t6)		# se almacena en $f22
 
 	# como se llama a otra funcion desde esta, se maneja el puntero de pila para el registro ra
 	addi	$sp,$sp,-4
 	sw	$ra,0($sp)
 
-	move	$a0,$t3			# a0 = t3
-	move	$a1,$t4			# a1 = t4
+	move	$a0,$t5			# a0 = t3
+	move	$a1,$t6			# a1 = t4
+	
 	jal	swap
 
 	# se reajusta el registro sp y ra
@@ -298,14 +302,13 @@ swap:
 	l.s	$f4,0($t0)		# f4 = [0(t0)]
 	l.s	$f5,0($t1)		# f5 = [0(t1)]
 
-	mov.s	$f6,$f4			# f6 = f4
-	mov.s	$f7,$f5			# f7 = f5
+	mov.s	$f7,$f4
+	mov.s	$f4,$f5			# f5 = f4
+	mov.s	$f5,$f7			# f4 = f6
+	
 
-	mov.s	$f5,$f4			# f5 = f4
-	mov.s	$f4,$f7			# f4 = f6
-
-	s.s	$f5,0($t0)		# [0(t0)] = f5
-	s.s	$f4,0($t1)		# [0(t1)] = f4
+	s.s	$f4,0($t0)		# [0(t0)] = f5
+	s.s	$f7,0($t1)		# [0(t1)] = f4
 	
 	jr	$ra
 
@@ -334,9 +337,10 @@ while_inicio:
 
 	beq	$s5,$zero,while_fin	# si s5 es igual a 0 salta a fin del bucle
 
-	beq	$s5,1,cambia_matr	# si s0 es igual a 1 salta a cambia_matr
-	beq	$s5,3,menu_elto		# si s0 es igual a 3 salta a menu_elto
-	beq	$s5,4,menu_elto		# si s0 es igual a 4 salta a menu_elto, alli se llama luego a la funcion swap
+	beq	$s5,1,cambia_matr	# si s5 es igual a 1 salta a cambia_matr
+	beq	$s5,3,menu_elto		# si s5 es igual a 3 salta a menu_elto
+	beq	$s5,4,menu_elto		# si s5 es igual a 4 salta a menu_elto, alli se llama luego a la funcion swap
+	beq	$s5,7,menu_elto		# si s5 es igual a 7 salta a min_menu, alli se llamará a funcion find_min
 	
 cambia_matr:
 	
@@ -448,6 +452,9 @@ menu_elto:
 	li	$v0,6
 	syscall
 	mov.s	$f20,$f0		#leemos nuevo valor y lo almacenamos en f20
+	
+	move	$a0,$s0			# muevo a a0 el inidice de la fila
+	move	$a1,$s2			# muevo a a1 el indice de la columna
 
 	jal	change_elto		# saltamos a change_elto
 	j	antes_inicio
@@ -471,6 +478,8 @@ error_colum:
 
 llama_swap:
 
+	move	$a0,$s0			# muevo a a0 el indice de la fila
+	move	$a1,$s2			# muevo a a1 el inidice de la columna
 	jal	intercambia
 	j	antes_inicio
 
@@ -483,4 +492,3 @@ while_fin:
 
 	li	$v0,10
 	syscall
-
