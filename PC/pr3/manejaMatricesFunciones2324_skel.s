@@ -152,6 +152,10 @@ print_mat:
 	lw	$s1,0($s0)		# $s1 guarda el nº de filas
 	lw	$s2,4($s0)		# $s2 guarda el nº de columnas
 
+	li	$v0,4
+	la	$a0,str_matTiene
+	syscall
+
 	li	$v0,1
 	move	$a0,$s1
 	syscall				# imprimo n_filas
@@ -309,7 +313,79 @@ swap:
 
 	s.s	$f4,0($t0)		# [0(t0)] = f5
 	s.s	$f7,0($t1)		# [0(t1)] = f4
+
+	jr	$ra
+
+find_min:
+	lw	$t0,0($s1)		# cargo en t0 el nº de filas
+	lw	$t1,4($s1)		# cargo en t1 el nº de columnas
+
+	addi	$t2,$s1,8		# cargo en $t2 la direccion de inicio de los elementos
+
+	li	$t3,-1			# fmin = -1
+	li	$t4,-1			# cmin = -1
+
+	la	$a0,infinito
+	l.s	$f5,0($a0)
+
+	li	$t5,0			# f = 0
+
+	primer_for:
+
+		bge	$t5,$t0,fin_primer_for
+		addi	$t5,$t5,1
 	
+		li	$t6,0			# c = 0
+
+		segundo_for:
+
+			bge	$t6,$t1,fin_segundo_for
+			addi	$t6,$t6,1		# ++c
+		
+			mul	$t5,$t5,$t1	# f * numCol
+			add	$t5,$t5,$t6	# f * numCol + c
+			add	$t5,$t5,$t2
+			l.s	$f4,0($t7)
+
+			c.lt.s	$f4,$f5
+			bc1f	if_fin
+
+			if:
+			mov.s	$f5,$f4
+			move	$t3,$t5
+			move	$t4,$t6
+
+			if_fin:
+			j	segundo_for
+		fin_segundo_for:
+		j	primer_for
+
+	fin_primer_for:
+
+	li	$v0,4
+	la	$a0,str_valMin
+	syscall
+
+	li	$v0,1
+	move	$a0,$t3
+	syscall
+
+	li	$v0,11
+	li	$a0,','
+	syscall
+
+	li	$v0,1
+	move	$a0,$t4
+	syscall
+
+	li	$v0,4
+	la	$a0,str_conValor
+	syscall
+
+	li	$v0,2
+	mov.s	$f12,$f5
+	syscall
+
 	jr	$ra
 
 main:
@@ -335,12 +411,24 @@ while_inicio:
 	syscall
 	move	$s5,$v0			# leemos el entero introducido y lo movemos a $s5
 
+	blt	$s5,$zero,error_opc
+	beq	$s5,2,error_opc
+	beq	$s5,5,error_opc
+	beq	$s5,6,error_opc
+	bgt	$s5,7,error_opc
+
 	beq	$s5,$zero,while_fin	# si s5 es igual a 0 salta a fin del bucle
 
 	beq	$s5,1,cambia_matr	# si s5 es igual a 1 salta a cambia_matr
 	beq	$s5,3,menu_elto		# si s5 es igual a 3 salta a menu_elto
 	beq	$s5,4,menu_elto		# si s5 es igual a 4 salta a menu_elto, alli se llama luego a la funcion swap
-	beq	$s5,7,menu_elto		# si s5 es igual a 7 salta a min_menu, alli se llamará a funcion find_min
+	beq	$s5,7,min_menu		# si s5 es igual a 7 salta a min_menu, alli se llamará a funcion find_min
+
+error_opc:
+	li	$v0,4
+	la	$a0,str_errorOpc
+	syscall
+	j	antes_inicio
 	
 cambia_matr:
 	
@@ -408,10 +496,10 @@ error_numero:
 	syscall
 
 	li	$v0,4
-	la	$a0,str_errorOpc	# imprimimos error de opcion
+	la	$a0,str_numMatMal	# imprimimos error de opcion
 	syscall
 
-	j	cambia_matr		# volvemos a elegir matriz
+	j	antes_inicio		# volvemos a elegir matriz
 
 menu_elto:
 
@@ -466,7 +554,7 @@ error_fila:
 	la	$a0,str_errorFil
 	syscall
 
-	j	while_inicio
+	j	antes_inicio
 
 error_colum:
 
@@ -474,13 +562,17 @@ error_colum:
 	la	$a0,str_errorCol
 	syscall
 
-	j	while_inicio
+	j	antes_inicio
 
 llama_swap:
 
 	move	$a0,$s0			# muevo a a0 el indice de la fila
 	move	$a1,$s2			# muevo a a1 el inidice de la columna
 	jal	intercambia
+	j	antes_inicio
+
+min_menu:
+	jal	find_min
 	j	antes_inicio
 
 while_fin:
