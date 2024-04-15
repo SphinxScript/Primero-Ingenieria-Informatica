@@ -277,41 +277,36 @@ void GRAFO::kruskal() {
     Raiz[q] = q;
   }
 
-//  for (int i{0}; i < Aristas.size(); ++i) {
-//    cout << Aristas[i].extremo1 << " " << Aristas[i].extremo2 << " " << Aristas[i].peso << endl;
-//  }
-
   // a partir de aqui el codigo no esta en el guion
-  vector<AristaPesada> T;
-  int contador{0};
-  int segundocontador{0};
-  AristaPesada arista;
-  while(segundocontador < (n - 1) && contador < m) {
-    if (Raiz[Aristas[contador].extremo1] != Raiz[Aristas[contador].extremo2]) {
-      int kill = Raiz[Aristas[contador].extremo1];
+  vector<AristaPesada> T;     // declaro un vector de AristaPesada T
+  int primer_elemento{0};            // inicio un contador primer_elemento a 0
+  int contador{0};                   // inicio un contador a 0
+  AristaPesada arista;        // declaro un elemento arista de tipo AristaPesada
+  while(contador < (n - 1) && primer_elemento < m) {
+    if (Raiz[Aristas[primer_elemento].extremo1] != Raiz[Aristas[primer_elemento].extremo2]) {
+      int kill = Raiz[Aristas[primer_elemento].extremo1];
       for (int k{0}; k < n; ++k) {
         if (Raiz[k] == kill) {
-          Raiz[k] = Raiz[Aristas[contador].extremo2];
+          Raiz[k] = Raiz[Aristas[primer_elemento].extremo2];
         }
       }
-      ++segundocontador;
-      arista.extremo1 = Aristas[contador].extremo1;
-      arista.extremo2 = Aristas[contador].extremo2;
-      arista.peso = Aristas[contador].peso;
+      ++contador;
+      arista.extremo1 = Aristas[primer_elemento].extremo1;
+      arista.extremo2 = Aristas[primer_elemento].extremo2;
+      arista.peso = Aristas[primer_elemento].peso;
       T.push_back(arista);
-      pesoMST += Aristas[contador].peso;
+      pesoMST += Aristas[primer_elemento].peso;
     }
-    contador++;
+    primer_elemento++;
   }
 
+  // en caso de siempre aplicar kruskal a pesar de ser no conexo, se comentan las lineas del else
 
   ///*
-  if (segundocontador != (n - 1)) {
+  if (contador != (n - 1)) {
     cout << "Grafo no conexo. No tiene árbol generador." << endl << endl;
   }
   //*/
-
-  // en caso de siempre aplicar kruskal a pesar de ser no conexo, se comentan las lineas del else
 
   else {
     for (int i{0}; i < T.size(); ++i) {
@@ -519,7 +514,7 @@ void GRAFO::Dijkstra_(double &comparaciones, unsigned s)
 
   do {
   //Buscamos un nodo candidato a ser permanentemente etiquetado: aquel de entre los no permanentemente etiquetados, es decir,  en el almacén con menor etiqueta distancia no infinita.
-  //Si existe ese candidato, lo etiquetamos permanentemente y usamos  los arcos de la lista de sucesores para buscar atajos. Por cada comparación  realizada para buscar atajos, incrementamos el contador de comparaciones.
+  //Si existe ese candidato, lo etiquetamos permanentemente y usamos  los arcos de la lista de sucesores para buscar atajos. Por cada comparación  realizada para buscar atajos, incrementamos el primer_elemento de comparaciones.
   //Si no existe ese candidato, es que ya hemos etiquetado permanentemente todos los nodos alcanzables desde el origen, y por tanto hemos acabado.
   
   //Inicializamos el mínimo a infinito
@@ -591,7 +586,7 @@ void GRAFO::BellmanFordEnd_(double &comparaciones, unsigned s) {
   pred.resize(n,UERROR);
   d[s]=0; pred[s]=s; comparaciones = 0;
   do {
-  // recorremos todos los arcos, y para cada (i, j), buscamos si d[j] > d[i] + cij, y actualizamos d y pred, incrementando el contador comparaciones cuando comparamos, independientemente de si mejoramos o no.
+  // recorremos todos los arcos, y para cada (i, j), buscamos si d[j] > d[i] + cij, y actualizamos d y pred, incrementando el primer_elemento comparaciones cuando comparamos, independientemente de si mejoramos o no.
   //si al menos en una ocasion ha mejorado una etiqueta distancia, no hemos terminado; contabilizamos los bucles en los que ha habido mejoras
   mejora = false;
   for (unsigned i=0; i<n; i++) {
