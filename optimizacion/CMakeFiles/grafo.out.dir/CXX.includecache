@@ -1,0 +1,34 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/usuario/Primero-Ingenieria-Informatica/optimizacion/grafo.cc
+grafo.h
+/home/usuario/Primero-Ingenieria-Informatica/optimizacion/grafo.h
+stack
+-
+
+/home/usuario/Primero-Ingenieria-Informatica/optimizacion/grafo.h
+vector
+-
+stdio.h
+-
+stdlib.h
+-
+iostream
+-
+fstream
+-
+queue
+-
+
+/home/usuario/Primero-Ingenieria-Informatica/optimizacion/main.cc
+string.h
+-
+grafo.h
+/home/usuario/Primero-Ingenieria-Informatica/optimizacion/grafo.h
+

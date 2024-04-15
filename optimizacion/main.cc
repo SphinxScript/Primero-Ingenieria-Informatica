@@ -18,10 +18,11 @@ void menu (unsigned dirigido, char &opcion)
     if (dirigido == 0) //Grafo no dirigido
             {
             cout << "i. Mostrar [i]nformacion basica del grafo" << endl;
-            //cout << "a. Mostrar la lista de [a]dyacencia del grafo" << endl;
+            cout << "a. Mostrar la lista de [a]dyacencia del grafo" << endl;
             //cout << "y. Mostrar la matriz de adyacencia del grafo" << endl;
             cout << "m. Realizar un recorrido en a[m]plitud del grafo desde un nodo" << endl;
             cout << "r. Realizar un [r]ecorrido en profundidad de un grafo desde un nodo" << endl;
+            cout << "k. Mostrar árbol generador de mínimo coste, [k]ruskal" << endl;
 	    //Aquí se añaden más opciones al menú del grafo no dirigido
             }
     else
@@ -40,7 +41,7 @@ void menu (unsigned dirigido, char &opcion)
     cout << "q. Finalizar el programa" << endl;
     cout << "Introduce la letra de la accion a ejecutar  > ";
     cin >> opcion;
-};
+}
 
 
 void clear() {
@@ -102,6 +103,12 @@ int main(int argc, char *argv[])
                     pressanykey();
                     clear();
                     break;
+                
+                case 'a' :
+                    clear();
+                    cout << "Lista de adyacencia: " << endl;
+                    G.Mostrar_Listas(0);
+                    break;
 
                 case 'i' :
                     clear();
@@ -122,7 +129,7 @@ int main(int argc, char *argv[])
                     clear();
                     cout << "Lista de predecesores.\nGrafo cargado desde " << nombrefichero << endl;
                     G.Mostrar_Listas(-1);
-                    pressanykey;
+                    pressanykey();
                     break;
                 
                 case 'r' :
@@ -138,10 +145,16 @@ int main(int argc, char *argv[])
                     G.RecorridoAmplitud();
                     pressanykey();
                     break;
+
+                case 'k':
+                    clear();
+                    cout << "haciendo algoritmo de kruskal: " << endl;
+                    G.kruskal();
+                    break;
             }
     }
     while (opcion != 'q');
     }
     cout << "Fin del programa" << endl;
 	return(0);
-};
+}

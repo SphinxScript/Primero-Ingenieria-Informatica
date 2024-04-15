@@ -29,6 +29,11 @@ typedef struct
 	int      c; // atributo para expresar los costes, pesos, las longitudes, las inversiones, etc...
 } ElementoLista;
 
+typedef struct {
+	unsigned extremo1, extremo2;
+	int peso;
+} AristaPesada;
+
 // definicion del tipo de una lista de adyacencia de un nodo
 typedef vector<ElementoLista> LA_nodo;
 
@@ -43,11 +48,11 @@ class GRAFO
 	void destroy();                 // Destructor del LS, A, y LP, en su caso
 	void build (char nombrefichero[85], int &errorapertura); //Crea LS, A y LP en su caso, desde la lectura del fichero
 	void dfs_num(unsigned& i, vector<LA_nodo>&  L, vector<bool> &visitado, vector<unsigned> &prenum, unsigned &prenum_ind, vector<unsigned> &postnum, unsigned &postnum_ind); //Recorrido en profundidad recursivo con recorridos enum y postnum
-  void bfs_num(unsigned i, vector<LA_nodo>  L, vector<unsigned> &pred, vector<unsigned> &d); //Recorrido en amplitud con cálculo de pred y d
+  void bfs_num(unsigned& i, vector<LA_nodo>&  L, vector<unsigned> &pred, vector<int> &d); //Recorrido en amplitud con cálculo de pred y d
 	void mostrar_nodospriv(vector<LA_nodo>&, vector<LA_nodo>&);
  public:
      GRAFO(char nombrefichero[85], int &errorapertura);
-     void actualizar (char nombrefichero[], int &errorapertura);
+     void actualizar (char nombrefichero[85], int &errorapertura);
      unsigned Es_dirigido(); // devuelve 0 si el grafo es no dirigido y 1 si es dirigido
      void Info_Grafo(); // devuelve información básica del grafo
      void Mostrar_Listas(int l);  //Muestra la lista de adyacencia
@@ -56,6 +61,7 @@ class GRAFO
      void RecorridoAmplitud(); //Construye un recorrido en amplitud desde un nodo inicial
      ~GRAFO(); //Destructor del objeto grafo
 		 void mostrar_nodos();
-};
+		 void kruskal();
+};	
 #endif
  
