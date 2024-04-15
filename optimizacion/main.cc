@@ -148,7 +148,7 @@ int main(int argc, char *argv[])
 
                 case 'k':
                     clear();
-                    cout << "haciendo algoritmo de kruskal: " << endl;
+                    cout << "Algoritmo de kruskal: " << endl << endl;
                     G.kruskal();
                     break;
             }

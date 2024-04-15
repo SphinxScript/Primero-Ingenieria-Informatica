@@ -250,10 +250,9 @@ void GRAFO::kruskal() {
   for (unsigned i = 0; i < n; i++) {
     for (unsigned j = 0; j < LS[i].size(); j++) {
       if (i < LS[i][j].j) {
-        Aristas[k].extremo1 = i + 1;
+        Aristas[k].extremo1 = i;
         Aristas[k].extremo2 = LS[i][j].j;
-        Aristas[k].peso = LS[i][j].c;
-        ++k;
+        Aristas[k++].peso = LS[i][j].c;
       }
     }
   }
@@ -278,23 +277,47 @@ void GRAFO::kruskal() {
     Raiz[q] = q;
   }
 
+//  for (int i{0}; i < Aristas.size(); ++i) {
+//    cout << Aristas[i].extremo1 << " " << Aristas[i].extremo2 << " " << Aristas[i].peso << endl;
+//  }
+
   // a partir de aqui el codigo no esta en el guion
   vector<AristaPesada> T;
-  //T.resize(n - 1);
   int contador{0};
-  int kill{0};
-  while(T.size() < n) {
-    AristaPesada e = Aristas[++contador];
+  int segundocontador{0};
+  AristaPesada arista;
+  while(segundocontador < (n - 1) && contador < m) {
     if (Raiz[Aristas[contador].extremo1] != Raiz[Aristas[contador].extremo2]) {
-      T.push_back(e);
-      kill = Raiz[Aristas[contador].extremo1];
-      for (int k{0}; k < Aristas.size(); ++k) {
-        if (Raiz[k] == kill) Raiz[k] = Raiz[Aristas[contador].extremo2];
+      int kill = Raiz[Aristas[contador].extremo1];
+      for (int k{0}; k < n; ++k) {
+        if (Raiz[k] == kill) {
+          Raiz[k] = Raiz[Aristas[contador].extremo2];
+        }
       }
+      ++segundocontador;
+      arista.extremo1 = Aristas[contador].extremo1;
+      arista.extremo2 = Aristas[contador].extremo2;
+      arista.peso = Aristas[contador].peso;
+      T.push_back(arista);
+      pesoMST += Aristas[contador].peso;
     }
+    contador++;
   }
-  for (int i{0}; i < T.size(); ++i) {
-    cout << "Arista numero: " << i + 1 << " incorporada: (" << T[i].extremo1 << "," << T[i].extremo2 << "), con peso " << T[i].peso << endl;
+
+
+  ///*
+  if (segundocontador != (n - 1)) {
+    cout << "Grafo no conexo. No tiene árbol generador." << endl << endl;
+  }
+  //*/
+
+  // en caso de siempre aplicar kruskal a pesar de ser no conexo, se comentan las lineas del else
+
+  else {
+    for (int i{0}; i < T.size(); ++i) {
+      cout << "Arista numero " << i + 1 << " incorporada: (" << T[i].extremo1 + 1 << "," << T[i].extremo2 + 1 << "), con peso " << T[i].peso << endl;
+    }
+    cout << endl << "El peso del árbol generador de mínimo coste es: " << pesoMST << endl << endl;
   }
 }
 
