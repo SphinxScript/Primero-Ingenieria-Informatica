@@ -25,6 +25,7 @@
 using namespace std;
 
 int main(void) {
+  system("clear");
   rpn_t<stack_l_t<int>> calculadora;
   queue_l_t<char> cola;
 	
