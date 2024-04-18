@@ -29,7 +29,10 @@ template <class T> class rpn_t {
   // operaciones
   const int evaluate(queue_l_t<char>&);
 
- private: 
+  int aridad(const char c) const;
+
+ private:
+  int aridad_;
   T stack_;
   void operate_(const char operador);
 };
@@ -58,6 +61,13 @@ template<class T> const int rpn_t<T>::evaluate(queue_l_t<char>& q) {
 
 template<class T> void rpn_t<T>::operate_(const char c) {
   assert(c == '+' || c == '-' || c == '*' || c == '/' || c == 'r' || c == '^' || c == 'l' || c == 'c');
+
+  if (aridad(c) == 2) {
+    std::cout << "   Operador de aridad 2" << std::endl;
+  }
+  else {
+    std::cout << "   Operador de aridad 1" << std::endl;
+  }
 
   if ((c != 'r') && (c != 'l') && (c != 'c')) {
     // poner código
@@ -124,6 +134,18 @@ template<class T> void rpn_t<T>::operate_(const char c) {
   }
   // poner código
   std::cout << "   Metemos en la pila el resultado: " << stack_.top() << std::endl;
+}
+
+
+template<class T> int rpn_t<T>::aridad(const char c) const {
+  int aridad{0};
+  if (c == '+' || c == '-' || c == '*' || c == '/' || c == '^') {
+    aridad = 2;
+  }
+  else {
+    aridad = 1;
+  }
+  return aridad;
 }
 
  
