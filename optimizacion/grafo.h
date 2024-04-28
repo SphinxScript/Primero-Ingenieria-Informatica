@@ -15,6 +15,7 @@
 #include <iostream>
 #include <fstream>
 #include <queue>
+#include <deque>
 
 using namespace std;
 
@@ -50,6 +51,7 @@ class GRAFO
 	void dfs_num(unsigned& i, vector<LA_nodo>&  L, vector<bool> &visitado, vector<unsigned> &prenum, unsigned &prenum_ind, vector<unsigned> &postnum, unsigned &postnum_ind); //Recorrido en profundidad recursivo con recorridos enum y postnum
   void bfs_num(unsigned& i, vector<LA_nodo>&  L, vector<unsigned> &pred, vector<int> &d); //Recorrido en amplitud con cálculo de pred y d
 	void mostrar_nodospriv(vector<LA_nodo>&, vector<LA_nodo>&);
+
  public:
      GRAFO(char nombrefichero[85], int &errorapertura);
      void actualizar (char nombrefichero[85], int &errorapertura);
@@ -62,6 +64,8 @@ class GRAFO
      ~GRAFO(); //Destructor del objeto grafo
 		 void mostrar_nodos();
 		 void kruskal();
+		 void mostrarcamino(unsigned s, unsigned i, const vector<unsigned>& pred);
+		 void PDM();
 };	
 #endif
  

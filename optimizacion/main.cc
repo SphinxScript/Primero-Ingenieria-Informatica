@@ -25,7 +25,7 @@ void menu (unsigned dirigido, char &opcion)
             cout << "k. Mostrar árbol generador de mínimo coste, [k]ruskal" << endl;
 	    //Aquí se añaden más opciones al menú del grafo no dirigido
             }
-    else
+    else  // grafo dirigido
             {
             cout << "i. Mostrar [i]nformacion basica del grafo" << endl;
             cout << "s. Mostrar la lista de [s]ucesores del grafo" << endl;
@@ -33,6 +33,7 @@ void menu (unsigned dirigido, char &opcion)
             //cout << "y. Mostrar la matriz de ad[y]acencia del grafo" << endl;
             cout << "m. Realizar un recorrido en a[m]plitud del grafo" << endl;
             cout << "r. Realizar un [r]ecorrido en profundidad del grafo" << endl;
+            cout << "d. Realizar el algoritmo PDM" << endl;
             //cout << "d. caminos mínimos [d]ijkstra" << endl;
             //cout << "d. caminos mínimos" << endl;
 
@@ -103,7 +104,7 @@ int main(int argc, char *argv[])
                     pressanykey();
                     clear();
                     break;
-                
+
                 case 'a' :
                     clear();
                     cout << "Lista de adyacencia: " << endl;
@@ -131,7 +132,7 @@ int main(int argc, char *argv[])
                     G.Mostrar_Listas(-1);
                     pressanykey();
                     break;
-                
+
                 case 'r' :
                     clear();
                     cout << "Haciendo recorrido en profundidad:" << endl;
@@ -150,6 +151,11 @@ int main(int argc, char *argv[])
                     clear();
                     cout << "Algoritmo de kruskal: " << endl << endl;
                     G.kruskal();
+                    break;
+                case 'd':
+                    clear();
+                    cout << "Algoritmo de caminos mínimos PDM" << endl << endl;
+                    G.PDM();
                     break;
             }
     }

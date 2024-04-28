@@ -152,8 +152,7 @@ void GRAFO::RecorridoProfundidad()
 
     cout << "Elige un nodo de partida [1-" << n << "]: ";
     cin >> (unsigned&) i;
-    cout << endl;
-    
+
     --i;
     dfs_num(i, LS, visitado, prenum, prenum_ind, postnum, postnum_ind);
 
@@ -165,7 +164,7 @@ void GRAFO::RecorridoProfundidad()
             cout << " -> ";
         }
     }
-    cout << endl << endl;
+    cout << endl;
     //Mostrar postnum
     cout << "Orden de visita de los nodos en postorden\n";
     for(int i{0}; i < postnum_ind; ++i) {
@@ -174,7 +173,7 @@ void GRAFO::RecorridoProfundidad()
             cout << " -> ";
         }
     }
-    cout << endl << endl;
+    cout << endl;
 }
 
 
@@ -278,113 +277,49 @@ void GRAFO::kruskal() {
     Raiz[q] = q;
   }
 
+//  for (int i{0}; i < Aristas.size(); ++i) {
+//    cout << Aristas[i].extremo1 << " " << Aristas[i].extremo2 << " " << Aristas[i].peso << endl;
+//  }
+
+
   // a partir de aqui el codigo no esta en el guion
-  vector<AristaPesada> T;     // declaro un vector de AristaPesada T
-  int primer_elemento{0};            // inicio un contador primer_elemento a 0
-  int contador{0};                   // inicio un contador a 0
-  AristaPesada arista;        // declaro un elemento arista de tipo AristaPesada
-  while(contador < (n - 1) && primer_elemento < m) {
-    if (Raiz[Aristas[primer_elemento].extremo1] != Raiz[Aristas[primer_elemento].extremo2]) {
-      int kill = Raiz[Aristas[primer_elemento].extremo1];
+  vector<AristaPesada> T;
+  //T.resize(n - 1);
+  int primerelemento{0};
+  int contador{n - 2};
+  AristaPesada arista;
+  while(contador >= (0) && primerelemento < m) {
+    if (Raiz[Aristas[primerelemento].extremo1] != Raiz[Aristas[primerelemento].extremo2]) {
+      int kill = Raiz[Aristas[primerelemento].extremo1];
       for (int k{0}; k < n; ++k) {
         if (Raiz[k] == kill) {
-          Raiz[k] = Raiz[Aristas[primer_elemento].extremo2];
+          Raiz[k] = Raiz[Aristas[primerelemento].extremo2];
         }
       }
-      ++contador;
-      arista.extremo1 = Aristas[primer_elemento].extremo1;
-      arista.extremo2 = Aristas[primer_elemento].extremo2;
-      arista.peso = Aristas[primer_elemento].peso;
+      --contador;
+      arista.extremo1 = Aristas[primerelemento].extremo1;
+      arista.extremo2 = Aristas[primerelemento].extremo2;
+      arista.peso = Aristas[primerelemento].peso;
       T.push_back(arista);
-      pesoMST += Aristas[primer_elemento].peso;
+      pesoMST += Aristas[primerelemento].peso;
     }
-    primer_elemento++;
+    primerelemento++;
   }
 
-  // en caso de siempre aplicar kruskal a pesar de ser no conexo, se comentan las lineas del else
 
   ///*
-  if (contador != (n - 1)) {
+  if (contador == (0)) {
     cout << "Grafo no conexo. No tiene árbol generador." << endl << endl;
   }
   //*/
 
+  // en caso de siempre aplicar kruskal a pesar de ser no conexo, se comentan las lineas del else
+
   else {
+    std::reverse(T.begin(),T.end());
     for (int i{0}; i < T.size(); ++i) {
       cout << "Arista numero " << i + 1 << " incorporada: (" << T[i].extremo1 + 1 << "," << T[i].extremo2 + 1 << "), con peso " << T[i].peso << endl;
     }
     cout << endl << "El peso del árbol generador de mínimo coste es: " << pesoMST << endl << endl;
   }
-}
-
-bool estaencola(int j, deque<unsigned> cola) {
-  bool esta = false;
-  for (int i = 0; i < cola.size(); ++i) {
-    int aux = cola.front();
-    cola.pop_front();
-    if (j == aux) {
-      esta = true;
-      break;
-    }
-  }
-  return esta;
-}
-
-
-void GRAFO::mostrarcamino(unsigned s, unsigned i, const vector<unsigned>& pred) {
-  if (i != s) {
-    mostrarcamino(s,pred[i],pred);
-    std::cout << " -> " << i + 1;
-  }
-  else {
-    std::cout << i + 1;
-  }
-  cout << endl << endl;
-}
-
-
-void GRAFO::PDM() {
-  deque<unsigned> dcola;
-  vector<int> d;
-  vector<unsigned> pred;
-  vector<bool> Encola;
-  unsigned nodo;
-
-  Encola.resize (n, false);
-  d.resize (n, maxint);
-  pred.resize (n, UERROR);
-
-  std::cout << "Escoja nodo de partida: (1 - " << n << ") " << endl;
-  std::cin >> nodo;
-  nodo--;
-  d[nodo] = 0;
-  pred[nodo] = nodo;
-
-  dcola.push_back(nodo);
-  Encola[nodo] = true;
-
-  while (!dcola.empty()) {
-    unsigned k = dcola.front();
-    dcola.pop_front();
-    Encola[k] = false;
-    for (int i{0}; i < LS.size(); ++i) {
-      for (int j{0}; j < LS[i].size(); ++j) {
-        if (d[j] > d[i] + LS[i][j].c) {
-          if (pred[j] == 0) {
-            dcola.push_back(j);
-          }
-          else {
-            if (!estaencola(j,dcola)) {
-              dcola.push_front(j);
-            }
-            d[j] = d[i] + LS[i][j].j;
-            pred[i] = j;
-            Encola[i] = true;
-          }
-        }
-      }
-    }
-  }
-  std::cout << "soluciones: \n";
-  mostrarcamino(nodo, nodo, pred);
 }
