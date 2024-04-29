@@ -10,7 +10,7 @@
         "${workspaceFolder}/grafo.cc",
         "${workspaceFolder}/main.cc",
         "-o",
-        "${workspaceFolder}/grafo.out"
+        "${workspaceFolder}/a.out"
       ],
       "options": {
         "cwd": "${workspaceFolder}"

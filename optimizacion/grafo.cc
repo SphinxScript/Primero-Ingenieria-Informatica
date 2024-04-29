@@ -317,9 +317,9 @@ void GRAFO::kruskal() {
   }
 }
 
-bool estaencola(int j, deque<unsigned> cola) {
+bool estaencola(int j, deque<unsigned>& cola) {
   bool esta = false;
-  for (int i = 0; i < cola.size(); ++i) {
+  while (!cola.empty()) {
     int aux = cola.front();
     cola.pop_front();
     if (j == aux) {
@@ -348,43 +348,41 @@ void GRAFO::PDM() {
   vector<int> d;
   vector<unsigned> pred;
   vector<bool> Encola;
-  unsigned nodo;
+  unsigned s;
 
   Encola.resize (n, false);
   d.resize (n, maxint);
   pred.resize (n, UERROR);
 
   std::cout << "Escoja nodo de partida: (1 - " << n << ") " << endl;
-  std::cin >> nodo;
-  nodo--;
-  d[nodo] = 0;
-  pred[nodo] = nodo;
+  std::cin >> s;
+  s--;
+  d[s] = 0;
+  pred[s] = s;
 
-  dcola.push_back(nodo);
-  Encola[nodo] = true;
+  dcola.push_back(s);
+  Encola[s] = true;
 
   while (!dcola.empty()) {
     unsigned k = dcola.front();
     dcola.pop_front();
     Encola[k] = false;
-    for (int i{0}; i < LS.size(); ++i) {
-      for (int j{0}; j < LS[i].size(); ++j) {
-        if (d[j] > d[i] + LS[i][j].c) {
-          if (pred[j] == 0) {
-            dcola.push_back(j);
+    for (int j{0}; j < LS[k].size(); ++j) {
+      if (d[j] > d[k] + LS[k][j].c) {
+        if (pred[j] == 0) {
+          dcola.push_back(j);
+        }
+        else {
+          if (!estaencola(j,dcola)) {
+            dcola.push_front(j);
           }
-          else {
-            if (!estaencola(j,dcola)) {
-              dcola.push_front(j);
-            }
-            d[j] = d[i] + LS[i][j].j;
-            pred[i] = j;
-            Encola[i] = true;
-          }
+          d[j] = d[k] + LS[k][j].c;
+          pred[j] = k;
+          Encola[j] = true;
         }
       }
     }
   }
   std::cout << "soluciones: \n";
-  mostrarcamino(nodo, nodo, pred);
+  mostrarcamino(s, s, pred);
 }
