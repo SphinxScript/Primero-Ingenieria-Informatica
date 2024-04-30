@@ -1,0 +1,77 @@
+void GRAFO::MostrarCamino(unsigned s, unsigned i, vector<unsigned> pred) {
+    if (pred[i] == UERROR) {
+        cout << "No hay camino desde el nodo" << s + 1 << " hasta el nodo" << i + 1 << endl;
+        return;
+    }
+    
+    if (i != s) {
+        MostrarCamino(s, pred[i], pred);
+        cout << " -> " << i + 1;
+    } else {
+        cout << i + 1;
+        return;
+    }
+}
+
+
+
+void GRAFO::PDM() {
+
+    deque<unsigned> dcola;
+    vector<int> d;
+    vector<unsigned> pred;
+    vector<bool> Encola;
+    unsigned s;
+ 
+    //Inicialmente no hay ningun nodo permanentemente etiquetado
+    Encola.resize(n, false);
+
+    //Inicialmente todas las etiquetas distancias son infinito
+    d.resize(n, maxint);
+
+    //Inicialmente el pred es null
+    pred.resize(n, UERROR);
+
+    //Pedimos un nodo de partida
+    cout << "Elige un nodo de partida [1-" << n << "]: ";
+    cin >> (unsigned&) s;
+    --s; //hay que restarle 1 a s
+
+    //La etiqueta distancia del nodo s es 0, y es su propio pred
+    d[s] = 0; 
+    pred[s] = s;
+
+    //añadimos s a dcola y actualizamos Encola
+    dcola.push_back(s); 
+    Encola[s] = true;
+
+    while (!dcola.empty()) {
+        int k = dcola.front();
+        dcola.pop_front();
+        Encola[k] = false;
+        for (int j{0}; j < LS[k].size(); j++) {
+            if (d[LS[k][j].j] > d[k] + LS[k][j].c) {
+                // si el nodo j nunca ha estado en la cola
+                if (pred[LS[k][j].j] == 0) {
+                    dcola.push_back(LS[k][j].j);
+                } else { // si ya ha estado en la cola
+                    if (!Encola[LS[k][j].j]) {
+                        dcola.push_front(LS[k][j].j);
+                    }
+                }
+
+                d[LS[k][j].j] = d[k] + LS[k][j].c;
+                pred[LS[k][j].j] = k;
+                Encola[LS[k][j].j] == true;
+            }
+        }
+    }
+    cout << "Soluciones:" << endl;
+    for(int i{0}; i < n; i++) {
+        cout << "Nodo " << i << ": ";
+        MostrarCamino(s, i, pred);
+        cout << endl;
+    }
+    cout << endl;
+
+}

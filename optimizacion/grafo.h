@@ -64,7 +64,7 @@ class GRAFO
      ~GRAFO(); //Destructor del objeto grafo
 		 void mostrar_nodos();
 		 void kruskal();
-		 void mostrarcamino(unsigned s, unsigned i, const vector<unsigned>& pred);
+		 void mostrarcamino(unsigned s, int i, const vector<unsigned>& pred);
 		 void PDM();
 };	
 #endif

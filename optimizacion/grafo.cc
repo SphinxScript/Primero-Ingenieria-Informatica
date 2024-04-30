@@ -317,29 +317,20 @@ void GRAFO::kruskal() {
   }
 }
 
-bool estaencola(int j, deque<unsigned>& cola) {
-  bool esta = false;
-  while (!cola.empty()) {
-    int aux = cola.front();
-    cola.pop_front();
-    if (j == aux) {
-      esta = true;
-      break;
-    }
+
+void GRAFO::mostrarcamino(unsigned s, int i, const vector<unsigned>& pred) {
+  if (pred[i] == UERROR) {
+    std::cout << "No hay camino desde el nodo " << s + 1 << " hasta el nodo " << i + 1;
+    return;
   }
-  return esta;
-}
-
-
-void GRAFO::mostrarcamino(unsigned s, unsigned i, const vector<unsigned>& pred) {
   if (i != s) {
     mostrarcamino(s,pred[i],pred);
     std::cout << " -> " << i + 1;
   }
   else {
     std::cout << i + 1;
+    return;
   }
-  cout << endl << endl;
 }
 
 
@@ -364,25 +355,31 @@ void GRAFO::PDM() {
   Encola[s] = true;
 
   while (!dcola.empty()) {
-    unsigned k = dcola.front();
+    int k = dcola.front();
     dcola.pop_front();
     Encola[k] = false;
     for (int j{0}; j < LS[k].size(); ++j) {
-      if (d[j] > d[k] + LS[k][j].c) {
-        if (pred[j] == 0) {
-          dcola.push_back(j);
+      if (d[LS[k][j].j] > d[k] + LS[k][j].c) {
+        if (pred[LS[k][j].j] == 0) {
+          dcola.push_back(LS[k][j].j);
         }
         else {
-          if (!estaencola(j,dcola)) {
-            dcola.push_front(j);
+          if (Encola[LS[k][j].j] == false) {
+            dcola.push_front(LS[k][j].j);
           }
-          d[j] = d[k] + LS[k][j].c;
-          pred[j] = k;
-          Encola[j] = true;
         }
+        d[LS[k][j].j] = d[k] + LS[k][j].c;
+        pred[LS[k][j].j] = k;
+        Encola[LS[k][j].j] = true;
       }
     }
   }
-  std::cout << "soluciones: \n";
-  mostrarcamino(s, s, pred);
+  std::cout << "soluciones: \n\n";
+  for (unsigned i{0}; i < n; ++i) {
+    cout << "Nodo" << i + 1 << ": ";
+    mostrarcamino(s, i, pred);
+    cout << ".   Distancia: " << d[i];
+    std::cout << std::endl << endl;
+  }
+  //std::cout << endl;
 }
