@@ -347,6 +347,7 @@ void GRAFO::PDM() {
 
   std::cout << "Escoja nodo de partida: (1 - " << n << ") " << endl;
   std::cin >> s;
+  cout << endl;
   s--;
   d[s] = 0;
   pred[s] = s;
@@ -378,8 +379,7 @@ void GRAFO::PDM() {
   for (unsigned i{0}; i < n; ++i) {
     cout << "Nodo" << i + 1 << ": ";
     mostrarcamino(s, i, pred);
-    cout << ".   Distancia: " << d[i];
+    cout << ". Distancia: " << d[i];
     std::cout << std::endl << endl;
   }
-  //std::cout << endl;
 }
