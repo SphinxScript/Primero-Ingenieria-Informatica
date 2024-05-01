@@ -113,6 +113,11 @@ maze_t::is_ok_(const int i, const int j) const
   // - fila i y la columna j están dentro de los límites del laberinto,
   // - la celda en (i, j) no puede ser un muro,
   // - la celda (i, j) no puede haber sido visitada antes.
+
+  if (i > 0 && j > 0 && i <= matrix_.get_m() && j <= matrix_.get_n() && matrix_.at(i,j) != WALL_ID && visited_.at(i,j) == false) {
+    return true;
+  }
+  return false;
 }
 
 
@@ -126,6 +131,9 @@ maze_t::solve_(const int i, const int j)
   // retornar 'true' si 'i' y 'j' han llegado a la salida
 
   // [poner código aquí]
+  if(matrix_.at(i,j) == END_ID) {
+    return true;
+  }
 
   // marcamos la celda como visitada
   visited_(i, j) = true;
@@ -138,7 +146,18 @@ maze_t::solve_(const int i, const int j)
   // propagarla retornando también 'true'
 
   // [poner código aquí]
-  
+
+  for (int k{0}; k <= 3; k++) {
+    int iNext{i + i_d[k]};
+    int jNext{j + j_d[k]};
+    if (is_ok_(iNext, jNext)) {
+      if (solve_(iNext, jNext)) {
+        matrix_.at(iNext, jNext) = PATH_ID;
+        return true;
+      }
+    }
+  }
+
   // desmarcamos la celda como visitada (denominado "backtracking") y
   // retornamos 'false'
   visited_(i, j) = false;

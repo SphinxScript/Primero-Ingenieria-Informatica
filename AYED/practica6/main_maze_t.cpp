@@ -16,7 +16,8 @@
 using namespace std;
 
 int main()
-{ 
+{
+  system("clear");
   maze_t M;
   
   cin >> M;
