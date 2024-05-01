@@ -12,6 +12,8 @@
 
 #include <iostream>
 #include "matrix_t.hpp"
+#include "pair_t.h"
+#include "stack_l_t.h"
 
 #define TRACE(x) cout << (#x) << "= " << (x) << endl
 
@@ -64,14 +66,14 @@ public:
   ~maze_t();
 
   // método para resolver el laberinto y que invoca al otro método recursivo
-  bool solve(void);
+  bool solve(stack_l_t<pair_t<int>>&);
 
   istream& read(istream& = cin);
   ostream& write(ostream& = cout) const;
   
 private:
   bool is_ok_(const int, const int) const;
-  bool solve_(const int, const int);
+  bool solve_(const int, const int, stack_l_t<pair_t<int>>&);
 };
 
 istream& operator>>(istream&, maze_t&);

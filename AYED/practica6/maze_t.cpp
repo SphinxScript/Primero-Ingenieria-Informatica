@@ -30,9 +30,9 @@ maze_t::~maze_t()
 
 // método que resuelve el laberinto invocando al método recursivo
 bool
-maze_t::solve()
+maze_t::solve(stack_l_t<pair_t<int>>& stack)
 {
-  return solve_(i_start_, j_start_);
+  return solve_(i_start_, j_start_, stack);
 }
 
 
@@ -125,7 +125,7 @@ maze_t::is_ok_(const int i, const int j) const
 // FASE II y FASE III
 // método recursivo que resuelve el laberinto
 bool
-maze_t::solve_(const int i, const int j)
+maze_t::solve_(const int i, const int j, stack_l_t<pair_t<int>>& stack)
 {
   // CASO BASE:
   // retornar 'true' si 'i' y 'j' han llegado a la salida
@@ -146,13 +146,16 @@ maze_t::solve_(const int i, const int j)
   // propagarla retornando también 'true'
 
   // [poner código aquí]
-
+  pair_t<int> par;
+  
   for (int k{0}; k <= 3; k++) {
     int iNext{i + i_d[k]};
     int jNext{j + j_d[k]};
     if (is_ok_(iNext, jNext)) {
-      if (solve_(iNext, jNext)) {
+      if (solve_(iNext, jNext, stack)) {
         matrix_.at(iNext, jNext) = PATH_ID;
+        par.set(jNext, iNext);
+        stack.push(par);
         return true;
       }
     }

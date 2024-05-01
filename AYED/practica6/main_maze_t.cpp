@@ -19,15 +19,18 @@ int main()
 {
   system("clear");
   maze_t M;
+  // uso de una pila de pares para guardar las parejas i y j y almacenar el camino de salida (FASE III)
+  stack_l_t<pair_t<int>> pila_sol;
   
   cin >> M;
   
   cout << M << endl;
   
-  if (M.solve())
+  if (M.solve(pila_sol))
   { 
     cout << "¡¡ Se ha encontrado una salida al laberinto !!" << endl;
-    cout << M << endl;
+    cout << M << endl << "La solución, por parejas de (fila, columna) es: " << endl << endl;
+    pila_sol.write();
   }
   else
     cout << "No se ha podido encontrar la salida del laberinto..." << endl;
