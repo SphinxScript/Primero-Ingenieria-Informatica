@@ -1,0 +1,10 @@
+vector_t<int> rotate(const vector_t<int>& v, const int r) {
+  int n = v.get_sz();
+  vector_t<int> resultado;
+  resultado.resize(n);
+
+  for (int i = 0; i < get_sz(); ++i) {
+    resultado[(i + r) % n] = v[i];
+  }
+  return resulado;
+}

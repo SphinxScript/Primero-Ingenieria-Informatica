@@ -85,5 +85,11 @@ int main()
   M.suma(U, I);
   M.write();
   
+  // ejercicio practica examen
+  // suma submatriz triangular superior con diagonal
+
+  std::cout << "Suma: " << C.triangular_inferior_sin() << std::endl;
+
+  C.write();
   return 0;
 }

@@ -1,0 +1,12 @@
+int binary_search(const int* v, int i, int d, int x) {
+  int c = -1;
+  if (i <= d) {
+    c = (i + d) / 2;
+    if (x != v[c]) {
+      int busqueda1 = binary_search(v, i, c - 1, x);
+      int busqueda2 = binary_search(v, c + 1, d, x);
+      c = max(busqueda1, busqueda2);
+    }
+  }
+  return c;
+}

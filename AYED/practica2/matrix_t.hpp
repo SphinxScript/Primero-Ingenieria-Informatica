@@ -49,6 +49,13 @@ public:
   // metodo serpiente
   void serpiente(const matrix_t<T>& A);
 
+  // metodos practica
+  double superior() const;
+  double sin_diagonal() const;
+  double triangular_inferior() const;
+  double triangular_inferior_sin() const;
+  bool product(const matrix_t<T>&, const matrix_t<T>&) const;
+
 private:
   int m_, n_; // m_ filas y n_ columnas
   vector_t<T> v_;
@@ -229,4 +236,72 @@ void matrix_t<T>::serpiente(const matrix_t<T>& A) {
     }
   }
   std::cout << std::endl;
+}
+
+
+
+// ejercicios practica examen:
+template <class T>
+double matrix_t<T>::superior() const {
+  double suma{0};
+  for (int i{1}; i <= get_m(); ++i) {  // m filas
+    for (int j{i}; j <= get_n(); ++j) {  // n columnas
+      suma += at(i,j);
+    }
+  }
+  return suma;
+}
+
+
+template <class T>
+double matrix_t<T>::sin_diagonal() const {
+  double suma{0};
+  for (int i{1}; i <= get_m(); ++i) {  // m filas
+    for (int j{i + 1}; j <= get_n(); ++j) {  // n columnas
+      suma += at(i,j);
+    }
+  }
+  return suma;
+}
+
+template <class T>
+double matrix_t<T>::triangular_inferior() const {
+  double suma{0};
+  for (int i{get_m()}; i > 0; --i) {
+    for (int j{i}; j > 0; --j) {
+      suma += at(i,j);
+    }
+  }
+  return suma;
+}
+
+
+template <class T>
+double matrix_t<T>::triangular_inferior_sin() const {
+  double suma{0};
+  for (int i{get_m()}; i > 0; --i) {
+    for (int j{i - 1}; j > 0; --j) {
+      suma += at(i,j);
+    }
+  }
+  return suma;
+}
+
+template <class T>
+bool matrix_t<T>::product(const matrix_t<T>& A, const matrix_t<T>& B) const {
+  if (A.get_n(); != B.get_m()) {
+    std::cout << "No son multiplicables" << std::endl;
+    return false;
+  }
+  resize(A.get_m(), B.get_n());
+  for (int i{1}; i <= get_m(); ++i) {
+    for (int j{1}; j <= get_n(); ++j) {
+      T aux = 0;
+      for (int k{1}; k <= A.get_n(); ++k) {
+        aux += A.at(i,k) * B.at(k,j);
+      }
+      at(i,j) = aux;
+    }
+  }
+  return true;
 }

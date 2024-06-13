@@ -1,0 +1,61 @@
+double tsd(void) {
+  double suma = 0.0;
+  for (int i = 1; i <= get_m(); ++i) {
+    for (int k = i; k <= get_n(); k++) {
+      suma += at(i,k);
+    }
+  }
+  return suma;
+}
+
+double tsd(void) {
+  double suma = 0.0;
+  for (int i = 1; i <= get_m(); ++i) {
+    for (int k = i + 1; i <= get_n(); ++k) {
+      suma += at(i,k);
+    }
+  }
+  return suma;
+}
+
+double tid() {
+  double suma = 0.0;
+  for (int i = get_m(); i > 0; --i) {
+    for (int k = i; k > 0; --k) {
+      suma += at(i,k);
+    }
+  }
+  return suma;
+}
+
+double tid() {
+  double suma = 0.0;
+  for (int i = 1; i <= get_m(); ++i) {
+    for (int k = 1; k <= i; ++k) {
+      suma += at(i,k);
+    }
+  }
+  return suma;
+}
+
+
+double tid() {
+  double suma = 0.0;
+  for (int i = get_m(); i > 0; --i) {
+    for (int k = i - 1; k > 0; --k) {
+      suma += at(i,k);
+    }
+  }
+  return suma;
+}
+
+
+double tid() {
+  double suma = 0.0;
+  for (int i = 2; i <= get_m(); ++i) {
+    for (int k = 1; k <= i - 1; ++k) {
+      suma += at(i,k);
+    }
+  }
+  return suma;
+}

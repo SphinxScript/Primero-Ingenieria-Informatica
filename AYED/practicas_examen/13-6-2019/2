@@ -1,0 +1,10 @@
+void remove(conjunto_t& c, unsigned i) {
+  conjunto_t uno = 1;
+  uno <<= i;
+  ~uno;
+  c &= ~uno;
+}
+
+conjunto_t XOR(conjunto_t A, conjunto_t B) {
+  return (A | B) & ~(A & B);
+}

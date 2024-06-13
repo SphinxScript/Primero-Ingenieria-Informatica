@@ -1,0 +1,15 @@
+int search(const int* v, int i, int d, int x) {
+  int c = -1;
+  if (i <= d) {
+    if (v[d] == x) {
+      return d;
+    }
+    else if (v[i] == x) {
+      return i;
+    }
+    else {
+      search(v, i++, d++, x);
+    }
+    return c;
+  }
+}

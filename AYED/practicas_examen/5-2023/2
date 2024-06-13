@@ -1,0 +1,7 @@
+int sumaElementos(stack_t<int>& pila) const {
+  int top;
+  if (pila.empty()) return 0;
+  top = pila.top();
+  pila.pop();
+  return top + sumaElementos(pila);
+}

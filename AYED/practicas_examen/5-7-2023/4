@@ -1,0 +1,4 @@
+bool is_palindrome(const vector_t<char>& s, const int i, const int d) {
+  if (i >= d) return true;
+  return (s[i] == s[d] && is_palindrome(s, ++i, --d));
+}

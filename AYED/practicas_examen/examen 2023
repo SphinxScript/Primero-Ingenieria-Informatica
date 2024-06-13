@@ -1,0 +1,80 @@
+1:
+
+private:
+ sll_t<T> l_;
+
+
+template <class T>
+void stack_sll_t<T>::push(const T& dato) {
+  sll_node_t<T>* nodo = new sll_node_t<T>(dato);
+  assert(nodo != NULL);
+  l_.insert_head(nodo);
+}
+
+
+template<class T>
+void stack_sll_t<T>::pop() {
+  assert(!empty());
+  delete l_.extract_head();
+}
+
+template<class T>
+T stack_sll_t<T>::top() {
+  assert (!empty());
+  sll_node_t<T>* nodo = l_.get_head();
+  return nodo->get_data();
+}
+
+template<class T>
+bool stack_sll_t<T>::empty() {
+  return l_.empty();
+}
+
+
+2
+
+int sumaElementos(stack_sll_t<int>& pila) {
+  int top;
+  if (pila.empty()) return 0;
+  else {
+    top = pila.top();
+    pila.pop();
+    return top + sumaElementos(pila);
+  }
+}
+
+3
+
+void sll_union(const sll_t<int>& A, const sll_t<int>& B, sll_t<int>& C) {
+  sll_node_t<int>* aux = A.get_head();
+  while(aux != NULL) {
+    if(B.search(aux->get_data()) == NULL) {
+      C.insert_head(new sll_node_t<int>(aux->get_data()));
+    }
+    aux = aux->get_next();
+  }
+  aux = B.get_head();
+  while (aux != NULL) {
+    C.insert_head(new sll_node_t<int>(aux->get_data()));
+    aux = aux->get_next();
+  }
+}
+
+4
+
+void to_base(const unsigned n, const unsigned short b, queue_t<unsigned>& q) {
+  // caso base
+  if (n < b) q.push(n)
+  else {
+    to_base(n / b, b, q);
+    q.push(n % b);
+  }
+}
+
+5
+
+block_t op1(const block_t A, const block_t B, const block t_C) {
+  block_t resultado;
+  resultado = (((A & B) | (B & C) | (A & C)) & ~(A & (B & C)));
+  return resultado;
+}

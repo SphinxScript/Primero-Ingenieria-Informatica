@@ -1,0 +1,24 @@
+void merge(dll_t<int>& L1, dll_t<int>& L2, dll_t<int>& R) {
+  dll_node_t<int>* aux1 = L1.get_head();
+  dll_node_t<int>* aux2 = L2.get_head();
+
+  while (aux1 != NULL && aux2 != NULL) {
+    if (aux1->get_data() <= aux2->get_data()) {
+      R.insert_tail(new dll_node_t<int>(aux1->get_data()));
+      aux1 = aux1->get_next();
+    }
+    else {
+      R.insert_tail(new dll_node_t<int>(aux2->get_data()));
+      aux2 = aux2->get_next();
+    }
+  }
+
+  while (aux1 != NULL) {
+    R.insert_tail(new dll_node_t<int>(aux1->get_data()));
+    aux1 = aux1->get_next();
+  }
+  while (aux2 != NULL) {
+    R.insert_tail(new dll_node_t<int>(aux2->get_data()));
+    aux2 = au2->get_next();
+  }
+}

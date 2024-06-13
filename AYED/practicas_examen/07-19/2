@@ -1,0 +1,11 @@
+int binary_search(const int* v, int i, int d, int x) {
+  int c = -1;
+  if (i <= d) {
+    c = (i + d) / 2;
+    if (v[c] != x) {
+      if (x < v[c]) c = binary_search(v, i, c - 1, x);
+      else c = binary_search(v, c + 1, d, x);
+    }
+  }
+  return c;
+}

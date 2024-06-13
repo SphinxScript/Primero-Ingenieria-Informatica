@@ -1,0 +1,12 @@
+
+int busqueda(const int* v, int i, int d, int x) const {
+  int c = -1;
+  if (i <= d) {
+    c = (i + d) / 2;
+    if (v[c] != x) {
+      if (v[c] > x) c = busqueda(v, i, c - 1, x);
+      else          c = busqueda(v, c + 1, d, x);
+    }
+  }
+  return c;
+}

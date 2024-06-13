@@ -1,0 +1,15 @@
+double vector_t<double>::scal_prod(const vector_t<double>$ b) {
+  assert(b.size() == size());
+  double suma = 0;
+  for (int i{0}; i < size(); ++i) {
+    suma += at(i) * b.at(i);
+  }
+  return suma;
+}
+
+
+double vector_t<double>::scal_prod_r(const vector_t<double>& b, int i = 0) {
+  assert(b.size() == size());
+  if (i == size()) return 0;
+  return suma += at(i) * b.at(i) + scal_prod_r(b, ++i)
+}

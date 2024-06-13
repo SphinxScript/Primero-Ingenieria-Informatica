@@ -1,0 +1,22 @@
+sll_t<T>::fusion(sll_t<T>& a, sll_t<T>& b) {
+  sll_node_t<T>* aux_a = a.get_head();
+  sll_node_t<T>* aux_b = b.get_head();
+  while (aux_a != NULL) {
+  
+      if (aux_a->get_data() < aux_b->get_data()) {
+        insert_head(new sll_node_t<T>(aux_a->get_data()));
+        aux_a = aux_a->get_next();
+      }
+      else if (aux_a->get_data() > aux_b->get_data()) {
+        insert_head(new sll_node_t<T>(aux_b->get_data()));
+        aux_b = aux_b->get_next();
+      }
+      else {
+        insert_head(new sll_node_t<T>(aux_a->get_data()));
+        insert_head(new sll_node_t<T>(aux_b->get_data()));
+        aux_a = aux_a->get_next();
+        aux_b = aux_b->get_next();
+      }
+  
+  }
+}

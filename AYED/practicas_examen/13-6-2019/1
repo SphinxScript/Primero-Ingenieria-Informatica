@@ -1,0 +1,19 @@
+sll_t<T>::~sll_t(void) {
+  while (!empty()) {
+    sll_node_t<T>* aux = head_;
+    head_ = head_->get_next();
+    delete aux;
+  }
+}
+
+
+sll_t<T>::~sll_t(void) {
+  destroy(head_);
+}
+
+void sll_t<T>::destroy(sll_node_t<T>* head) {
+  if(head != NULL) {
+    destroy(head->get_next());
+  }
+  delete head;
+}

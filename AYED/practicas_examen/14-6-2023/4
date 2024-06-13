@@ -1,0 +1,10 @@
+dll_node_t<int>* dll_t<int>::find(const int v) {
+  dll_node_t<int>* aux = head_;
+  while (aux != NULL) {
+    if (aux->get_data() == v) {
+      return aux;
+    }
+    aux = aux->get_next();
+  }
+  return aux;
+}

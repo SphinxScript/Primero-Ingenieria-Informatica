@@ -1,0 +1,33 @@
+bool es_palindroma(const vector_t<char>& cadena) {
+  bool palindroma = true;
+  vector_t<char> aux;
+  aux.resize(cadena.get_size());
+
+  int indice = 0;
+  for (int i = cadena.get_size(); i >= 0; ++i) {
+    aux[indice] = cadena[i];
+    ++indice;
+  }
+  for (int i = 0; i < cadena.get_size(); ++i) {
+    if (cadena[i] != aux[i]) palindroma = false;
+  }
+  return palindroma;
+}
+
+
+bool es_palindroma(const vector_t<char>& cadena) {
+  stack_t<char> pila;
+  for (int i = 0; i < cadena.get_size() / 2; ++i) {
+    pila.push(cadena[i]);
+  }
+  int mitad = cadena.get_size() / 2;
+  if((cadena.get_size() % 2 != 0)) mitad++;
+  esPalindroma = true;
+  for (int i = mitad; i < cadena.get_size(); ++i) {
+    char c = pila.top();
+    if (cadena[i] != c) {
+      return false;
+    }
+    pila.pop();
+  }
+}

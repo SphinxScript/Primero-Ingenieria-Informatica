@@ -1,0 +1,26 @@
+sll_t<T> l_;
+
+template <class  T>
+void stack_sll_t<T>::push(const T& dato) {
+  sll_node_t<T>* nodo = new sll_node_t<T>(dato);
+  assert(nodo != NULL);
+  l_.insert_head(nodo);
+}
+
+template <class  T>
+void stack_sll_t<T>::pop() {
+  assert (!empty());
+  delete l_.extract_head();
+}
+
+template <class T>
+const T& stack_sll_t<T>::top() {
+  assert(!empty());
+  sll_note_t<T>* aux = l_.get_head();
+  return aux->get_data();
+}
+
+template <class T>
+bool stack_sll_t<T>::empty() {
+  return head_ == NULL;
+}

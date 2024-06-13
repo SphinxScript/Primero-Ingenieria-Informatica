@@ -1,0 +1,188 @@
+1
+
+vector_t<int> rotate(const vector_t<int>& v, const int r) {
+  vector_t<int> resultado;
+  int size = v.get_size();
+  resultado.resize(size);
+  for (int i = 0; i < size; ++i) {
+    resultado[(i + r) % size] = v[i];
+  }
+}
+
+2
+
+bool es_palindroma(const vector_t<char>& cadena) {
+  bool palindroma = true;
+  int mitad = cadena.get_size() / 2;
+  stack_l_t<char> pila;
+  for (int i = 0; i < mitad; ++i) {
+    pila.push(cadena[i]);
+  }
+  if ((cadena.get_size() % 2) != 0) ++mitad;
+
+  for (int i = mitad; i < cadena.get_size() && palindroma; ++i) {
+    if (cadena[i] != pila.top()) palindroma = false;
+    pila.pop();
+  }
+  return palindroma;
+}
+
+3
+
+void all_bin(vector_t<char>& binario, const int i = 0) {
+  if (i == binario.get_size()) {
+    cout << binario << " ";
+  }
+  else {
+    binario[i] = '0';
+    all_bin(binario, i + 1);
+    binario[i] = '1';
+    all_bin(binario, i + 1);
+  }
+}
+
+
+int maximo(const vector_t<int>& V, const unsigned int i) {
+  if (i == 0) return v[i];
+  else {
+    int maximo = max(V[i], maximo(V, --i))
+    return (maximo);
+  }
+}
+
+template<>
+dll_node_t<int>* dll_t<int>::find(const int v) {
+  dll_node_t<int>* nodo = get_head();
+  while (nodo != NULL) {
+    if (nodo->get_data() == v) {  
+      return nodo;
+    }
+    nodo = nodo->set_next();
+  }
+  return nodo;
+}
+
+template <class T>
+void sll_t<T>::erase_evens(void) {
+  sll_node_t<T>* impar = get_head();
+  while (impar != NULL && impar->get_next() != NULL) {
+    delete impar.extract_after(impar);
+    impar = impar->get_next();
+  }
+}
+
+int akerman(int x, int y) {
+  if (x == 0) return y + 1;
+  else if (y == 0) {
+    return akerman(x - 1, 1);
+  }
+  else {
+    return akerman(x - 1, akerman(x, y - 1));
+  }
+}
+
+
+template <class T>
+T sll_t<T>::erase_last() {
+  sll_node_t<T>* aux = get_head();
+  while (aux != NULL) {
+    if (aux->get_next()->get_next() == NULL) {
+      T& dato;
+      dato = aux->get_next()->get_data();
+      delete aux->get_next();
+      aux->set_next(NULL);
+      return dato;
+    }
+    aux = aux->get_next();
+  }
+}
+
+template <class T>
+void sll_t<T>::intercambia2() {
+  sll_node_t<T>* aux = get_head();
+  assert (aux->get_next() != NULL);
+  head_ = aux->get_next();
+  aux->get_next()->set_next(NULL);
+  head_->get_next()->set_next(aux->get_next());
+  
+}
+
+
+
+double operator*(const sparse_vector_t& a, const sparse_vector_t& b) {
+  assert(a.get_n() == b.get_n());
+  double producto = 0.0;
+  int sz_a = a.get_nz();
+  int sz_b = b.get_nz();
+  for (int i = 0, j = 0; i < sz_a && j < sz_b;) {
+    if (a[i].get_inx() < b[j].get_inx()) {
+      ++i;
+    }
+    else if (a[i].get_inx() > b[j].get_inx()) {
+      j++;
+    }
+    else {
+      producto += a[i].get_val() * b[j].get_val();
+      ++i;
+      ++j;
+    }
+  }
+}
+
+
+void hacking(vector<char>& pw, const int i = 0) {
+  if (i == pw.get_size()) {
+    cout << pw << " ";
+  }
+  else {
+    for (int k = 0; k < ALPHABET.get_size(); ++k) {
+      pw[i] = ALPHABET[k];
+      hacking(pw, i + 1);
+    }
+  }
+}
+
+template <>
+bool matrix_t<int>::is_estocastic() {
+  assert (get_m() == get_n());
+  int estocastica = true;
+  for (int i{1}; i <= get_n() && estocastica; ++i) {
+    int acumulador = 0;
+    for (int j{1}; j <= get_m() && estocastica; ++j) {
+      if (at(j,i) < 0) estocastica = false;
+      acumulador += at(j,i);
+    }
+    if (acumulador != 1) estocastica = false;
+  }
+  return estocastica;
+}
+
+bool is_palindrome(const vector_t<char>& s, const int i, const int d) {
+  if (i >= d) return true;
+  else {
+    return ((s[i] == s[d]) && is palindrome(s, i + 1, d - 1));
+  }
+}
+
+void merge(dll_t<int>& L1, dll_t<int>& L2, dll_t<int>& R) {
+  dll_node_t<int>* aux1 = L1.get_head();
+  dll_node_t<int>* aux2 = L2.get_head();
+  while (aux1 != NULL && aux2 != NULL) {
+    if (aux1->get_data() >= aux2->get_data()) {
+      R.insert_tail(new dll_node_t<int>(aux2->get_data()));
+      aux2 = aux2->get_next();
+    }
+    else {
+      R.insert_tail(new dll_node_t<int>(aux1->get_data()));
+      aux1 = aux1->get_next();
+    }
+  }
+  while (aux1 != NULL) {
+    R.insert_tail(new dll_node_t<int>(aux1->get_data()));
+    aux1 = aux1->get_next();
+  }
+  while (aux2 != NULL) {
+    R.insert_tail(new dll_node_t<int>(aux2->get_data()));
+    aux2 = aux2->get_next();
+  }
+}

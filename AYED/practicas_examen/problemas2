@@ -1,0 +1,38 @@
+int scalarProd(const sparse_vector_t<int>& sv1, const sparse_vector_t<int>& sv2) {
+  assert (sv1.get_n() == sv2.get_n());
+  int sz1 = sv1.get_nz();
+  int sz2 = sv2.get_nz();
+  int ind1 = 0;
+  int ind2 = 0;
+  int scalar = 0;
+  while (ind1 < sz1 && ind2 < sz2) {
+    if (sv1[ind1].get_inx() > sv2[ind2].get_inx()) ++ind2;
+    else if (sv1[ind1].get_inx() < sv2[ind2].get_inx()) ++ind1;
+    else {
+      scalar += sv1[ind1].get_val() * sv2[ind2].get_val();
+      ++ind1;
+      ++ind2;
+    }
+  }
+  return scalar;
+}
+
+
+
+sparse_vector_t<int> suma(const sparse_vector_t<int>& sv1, const sparse_vecto_t<int>& sv2) {
+  int sz1 = sv1.get_n();
+  int sz2 = sv2.get_n();
+  sparse_vector_t<int> resultado(max(sz1,sz2));
+  int k = 0;
+  for (int ind1 = 0, ind2 = 0; (ind1 < sz1) && (ind2 < sz2);) {
+    if (sv1[ind1].get_inx() < sv2[ind2].get_inx()) {
+      resultado[k++] = sv1[ind1++].get_val();
+    }
+    else if (sv1[ind1].get_inx() > sv2[ind2].get_inx()) {
+      resultado[k++] = sv2[ind2++].get_val();
+    }
+    else {
+      resultado[k++] = sv2[ind2++].get_val() + sv1[ind1++].get_val();
+    }
+  }
+}

@@ -1,0 +1,14 @@
+void sll_union(const sll_t<int>& A, const sll_t<int>& B, sll_t<int>& C) {
+  sll_node_t<int>* aux = A.get_head();
+  while(aux != NULL) {
+    if (B.search(aux->get_data()) == NULL) {
+      C.insert_head(new sll_node_t<int>(aux->get_data()));
+    }
+    aux = aux->get_next();
+  }
+  aux = B.get_head();
+  while (aux != NULL) {
+    C.insert_head(new sll_node_t<int>(aux->get_data()));
+    aux = aux->get_next();
+  }
+}

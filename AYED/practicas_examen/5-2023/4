@@ -1,0 +1,5 @@
+void to_base(const unsigned n, const unsigned short b, queue_t<unsigned>& q) {
+  if (n < b) q.push(n);
+  void to_base(n / b, b,q);
+}
+

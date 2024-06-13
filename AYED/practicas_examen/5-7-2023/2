@@ -1,0 +1,9 @@
+void hacking(vector<char>& pw, const int i = 0) {
+  if (pw.size() == i) {
+    cout << pw << " ";
+  }
+  else {
+    pw[i] = ALPHABET[i];
+    hacking(pw,++i);
+  }
+}

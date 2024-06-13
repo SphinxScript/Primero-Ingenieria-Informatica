@@ -1,0 +1,14 @@
+template<> bool matrix_t<int>::is_estocastica(void) {
+  assert(get_m() == get_n());
+  is_estocastica = true;
+  for (int i = 1; i <= get_n() && estocastica; ++i) {
+    int suma = 0;
+    for (int j = 1; i <= get_m() && estocastica; ++j) {
+      if(at(j,i) < 0) estocastica = false;
+      suma += at(j,i);
+      if (suma != 1) estocastica = false;
+    }
+  }
+  return estocastica;
+}
+

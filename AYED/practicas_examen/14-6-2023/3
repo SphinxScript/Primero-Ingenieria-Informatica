@@ -1,0 +1,11 @@
+void all_bin(vector_t<char>& binario, const int i = 0) {
+  if (i == binario.size()) {
+    cout << binario << " ";
+  }
+  else {
+    binario[i] = '0';
+    all_bin(binario, i + 1);
+    binario[i] = '1';
+    all_bin(binario, i + 1);
+  }
+}

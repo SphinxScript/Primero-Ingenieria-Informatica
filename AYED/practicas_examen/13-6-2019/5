@@ -1,0 +1,17 @@
+template <class T>
+void sll_t<T>::write(ostream& os) {
+  stack<T> stack;
+  sll_node_t<T>* aux = get_head();
+  while (aux != NULL) {
+    if (aux->get_data() % 2 == 0) {
+      stack.push(aux->get_data());
+    }
+    aux = aux->get_next();
+  }
+
+
+  while (!stack.empty()) {
+    os << stack.top() << " ";
+    stack.pop();
+  }
+}

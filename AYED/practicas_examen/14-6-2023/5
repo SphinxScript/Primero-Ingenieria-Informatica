@@ -1,0 +1,8 @@
+template <class T>
+void sll_t<T>::erase_evens(void) {
+  sll_node_t<T>* aux = get_head();
+  while (aux != NULL && aux->get_next() != NULL) {
+    delete erase_afer(aux);
+    aux = aux->get_next();
+  }
+}

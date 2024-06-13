@@ -1,0 +1,11 @@
+void writereverse(ostream& os) {
+  write(os, head_);
+}
+
+void write(ostream& os, sll_node_t<T>* nodo) {
+  if (nodo != NULL) {
+    sll_node_t<T>* aux = nodo->get_next();
+    write(os, aux);
+    os << nodo->get_data();
+  }
+}

@@ -1,0 +1,6 @@
+void write_inverso(sll_node_t* node, ostream& os) {
+  if (node != NULL) {
+    write_inverso(node->get_next(), os);
+    os << node->get_data() << " ";
+  }
+}

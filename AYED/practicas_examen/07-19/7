@@ -1,0 +1,5 @@
+double sparse_vector_t::scal_prod(const vector_t<double>& b, const int i = 0) {
+  assert (sz_ == b.get_sz());
+  if (i == b.get_sz()) return 0.0;
+  return += at(i) * b.at(i) + scal_prod(b, ++i);
+}
