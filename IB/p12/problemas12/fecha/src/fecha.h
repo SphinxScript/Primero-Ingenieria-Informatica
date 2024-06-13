@@ -17,7 +17,7 @@
 
 class Fecha {
  public:
-  Fecha (int, int, int); /// constructor
+  Fecha (int, int, int); // constructor
   bool esBisiesto();
   bool esFechaValida();
  
