@@ -1,0 +1,26 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Depurar C++ Linux",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/optimizacion/grafo.out",
+      "args": [],
+      "stopAtEntry": false,
+      "cwd": "${workspaceFolder}/optimizacion",
+      "environment": [],
+      "externalConsole": false,
+      "MIMode": "gdb",
+      "miDebuggerPath": "/usr/bin/gdb",
+      "setupCommands": [
+        {
+          "description": "Habilitar impresión pretty",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        }
+      ],
+      "preLaunchTask": "compilar"
+    }
+  ]
+}

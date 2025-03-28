@@ -10,22 +10,22 @@
 #include "grafo.h"
 
 void menu(unsigned dirigido, char &opcion) {  // Expresión del menú de opciones según sea un grafo dirigido o no dirigido
-  cout << "Optimiza!cion en Grafos, 2021-2022 Ricardo David Rodríguez Pane" << endl;
-  cout << "c. [c]argar grafo desde fichero" << endl;
+  std::cout << "Optimiza!cion en Grafos, 2021-2022 Ricardo David Rodríguez Pane" << std::endl;
+  std::cout << "c. [c]argar grafo desde fichero" << std::endl;
   if (dirigido == 0) {  // Grafo no dirigido
-    cout << "i. Mostrar [i]nformacion basica del grafo" << endl;
-    cout << "a. Mostrar la lista de [a]dyacencia del grafo" << endl;
-    cout << "o. Mostrar c[o]mponentes conexas del grafo" << endl;
+    std::cout << "i. Mostrar [i]nformacion basica del grafo" << std::endl;
+    std::cout << "a. Mostrar la lista de [a]dyacencia del grafo" << std::endl;
+    std::cout << "o. Mostrar c[o]mponentes conexas del grafo" << std::endl;
     // cout << "y. Mostrar la matriz de adyacencia del grafo" << endl;
     // cout << "m. Realizar un recorrido en a[m]plitud del grafo desde un nodo" << endl;
     // cout << "r. Realizar un [r]ecorrido en profundidad de un grafo desde un nodo" << endl;
     // cout << "k. Mostrar árbol generador de mínimo coste, [k]ruskal" << endl;
     // Aquí se añaden más opciones al menú del grafo no dirigido
   } else {  // Grafo dirigido
-    cout << "i. Mostrar [i]nformacion basica del grafo" << endl;
-    cout << "s. Mostrar la lista de [s]ucesores del grafo" << endl;
-    cout << "p. Mostrar la lista de [p]redecesores del grafo" << endl;
-    cout << "o. Mostrar componentes fuertemente c[o]nexas del grafo" << endl;
+    std::cout << "i. Mostrar [i]nformacion basica del grafo" << std::endl;
+    std::cout << "s. Mostrar la lista de [s]ucesores del grafo" << std::endl;
+    std::cout << "p. Mostrar la lista de [p]redecesores del grafo" << std::endl;
+    std::cout << "o. Mostrar componentes fuertemente c[o]nexas del grafo" << std::endl;
     // cout << "y. Mostrar la matriz de ad[y]acencia del grafo" << endl;
     // cout << "m. Realizar un recorrido en a[m]plitud del grafo" << endl;
     // cout << "r. Realizar un [r]ecorrido en profundidad del grafo" << endl;
@@ -34,9 +34,9 @@ void menu(unsigned dirigido, char &opcion) {  // Expresión del menú de opcione
     // cout << "d. caminos mínimos" << endl;
     // Aquí se añaden más opciones al menú del grafo dirigido
   }
-  cout << "q. Finalizar el programa" << endl;
-  cout << "Introduce la letra de la accion a ejecutar  > ";
-  cin >> opcion;
+  std::cout << "q. Finalizar el programa" << std::endl;
+  std::cout << "Introduce la letra de la accion a ejecutar  > ";
+  std::cin >> opcion;
 }
 
 void clear() {
@@ -51,23 +51,26 @@ void pressanykey() {
 // y un menú inicial si no hay un grafo cargado
 int main(int argc, char *argv[]) {
   int error_apertura;
-  char nombrefichero[85], opcion;
+  std::string nombrefichero;
+  char opcion;
   clear();
   // Si tenemos el nombre del primer fichero por argumento, es una excepción, y lo intentamos cargar; si no, lo pedimos desde teclado
   if (argc > 1) {
-    cout << "Cargando datos desde el fichero dado como argumento" << endl;
-    strcpy(nombrefichero, argv[1]);
-  } else {
-    cout << "Introduce el nombre completo del fichero de datos" << endl;
-    cin >> nombrefichero;
+    std::cout << "Cargando datos desde el fichero dado como argumento" << std::endl;
+    nombrefichero = argv[1];
+  }
+  else {
+    std::cout << "Introduce el nombre completo del fichero de datos" << std::endl;
+    std::cin >> nombrefichero;
   }
   GRAFO G(nombrefichero, error_apertura);
   if (error_apertura == 1) {
-    cout << "Error en la apertura del fichero desde argumento: revisa nombre y formato" << endl;
-    pressanykey();
-    clear();
-  } else {
-    cout << "Grafo cargado desde el fichero " << nombrefichero << endl;
+    std::cout << nombrefichero << std::endl;
+    std::cout << "Error en la apertura del fichero desde argumento: revisa nombre y formato" << std::endl;
+    return EXIT_FAILURE;
+  }
+  else {
+    std::cout << "Grafo cargado desde el fichero " << nombrefichero << std::endl;
     pressanykey();
     clear();
     do {
@@ -75,26 +78,27 @@ int main(int argc, char *argv[]) {
       switch (opcion) {
         case 'c':
           clear();
-          cout << "Introduce el nombre completo del fichero de datos" << endl;
-          cin >> nombrefichero;
+          std::cout << "Introduce el nombre completo del fichero de datos" << std::endl;
+          std::cin >> nombrefichero;
           G.actualizar(nombrefichero, error_apertura);
           if (error_apertura == 1) {
-            cout << "Error en la apertura del fichero: revisa nombre y formato : puedes volver a intentarlo" << endl;
+            std::cout << "Error en la apertura del fichero: revisa nombre y formato" << std::endl;
+            EXIT_FAILURE;
           }
           else {
-            cout << "Fichero cargado correctamente desde " << nombrefichero << endl;
+            std::cout << "Fichero cargado correctamente desde " << nombrefichero << std::endl;
           }
           pressanykey();
           clear();
           break;
         case 'a':
           clear();
-          cout << "Lista de adyacencia: " << endl;
+          std::cout << "Lista de adyacencia: " << std::endl;
           G.Mostrar_Listas(0);
           break;
         case 'i':
           clear();
-          cout << "Grafo cargado desde " << nombrefichero << endl;
+          std::cout << "Grafo cargado desde " << nombrefichero << std::endl;
           G.Info_Grafo();
           // G.mostrar_nodos();
           pressanykey();
@@ -102,52 +106,53 @@ int main(int argc, char *argv[]) {
           break;
         case 's':
           clear();
-          cout << "Lista de sucesores.\nGrafo cargado desde: " << nombrefichero << endl;
+          std::cout << "Lista de sucesores.\nGrafo cargado desde: " << nombrefichero << std::endl;
           G.Mostrar_Listas(1);
           pressanykey();
           break;
         case 'o':
           clear();
           if (G.Es_dirigido() == 0) {
-            cout << "Componentes conexas del grafo" << endl;
+            std::cout << "Componentes conexas del grafo: " << std::endl << std::endl;
             G.ComponentesConexas();
-          } else {
-            cout << "Componentes fuertemente conexas del grafo" << endl;
-            // G.ComponentesFuertementeConexas();
+          }
+          else {
+            std::cout << "Componentes fuertemente conexas del grafo: " << std::endl << std::endl;
+            G.ComponentesFuertementeConexas();
           }
           break;
         case 'p':
           clear();
-          cout << "Lista de predecesores.\nGrafo cargado desde " << nombrefichero << endl;
+          std::cout << "Lista de predecesores.\nGrafo cargado desde " << nombrefichero << std::endl;
           G.Mostrar_Listas(-1);
           pressanykey();
           break;
         case 'r':
           clear();
-          cout << "Haciendo recorrido en profundidad:" << endl;
+          std::cout << "Haciendo recorrido en profundidad:" << std::endl;
           G.RecorridoProfundidad();
           pressanykey();
           break;
         case 'm':
           clear();
-          cout << "Haciendo recorrido en amplitud:" << endl;
+          std::cout << "Haciendo recorrido en amplitud:" << std::endl;
           G.RecorridoAmplitud();
           pressanykey();
           break;
         case 'k':
           clear();
-          cout << "Algoritmo de kruskal: " << endl << endl;
+          std::cout << "Algoritmo de kruskal: " << std::endl << std::endl;
           G.kruskal();
           break;
         case 'd':
           clear();
-          cout << "Algoritmo de caminos mínimos PDM" << endl << endl;
+          std::cout << "Algoritmo de caminos mínimos PDM" << std::endl << std::endl;
           G.PDM();
           break;
       }
     }
     while (opcion != 'q');
   }
-  cout << "Fin del programa" << endl;
+  std::cout << "Fin del programa" << std::endl;
   return 0;
 }

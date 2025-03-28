@@ -1,0 +1,22 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "compilar",
+      "type": "shell",
+      "command": "g++",
+      "args": [
+        "-g",
+        "optimizacion/main.cc",
+        "optimizacion/grafo.cc",
+        "-o",
+        "optimizacion/grafo.out"
+      ],
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    }
+  ]
+}

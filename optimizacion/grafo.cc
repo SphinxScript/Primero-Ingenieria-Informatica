@@ -22,14 +22,15 @@ void GRAFO::destroy() {
   A.clear();
 }
 
-void GRAFO::build(char nombrefichero[85], int &errorapertura) {
-  if (errorapertura == 1) {
-    cout << "Error de apertura. Fin de programa" << endl;
-    EXIT_FAILURE;
+void GRAFO::build(const std::string &nombrefichero, int &errorapertura) {
+
+  std::ifstream textfile{nombrefichero};
+  if (!textfile.is_open()) {
+    std::cout << "No se puede abrir el fichero" << std::endl;
+    errorapertura = 1;
+    return;
   }
   ElementoLista dummy;
-  ifstream textfile;
-  textfile.open(nombrefichero);
   if (textfile.is_open()) {
     unsigned i, j, k;
     // Leemos por conversión implícita el número de nodos, arcos y el atributo dirigido
@@ -72,11 +73,11 @@ void GRAFO::build(char nombrefichero[85], int &errorapertura) {
 
 GRAFO::~GRAFO() { destroy(); }
 
-GRAFO::GRAFO(char nombrefichero[85], int &errorapertura) {
+GRAFO::GRAFO(const std::string &nombrefichero, int &errorapertura) {
   build(nombrefichero, errorapertura);
 }
 
-void GRAFO::actualizar(char nombrefichero[85], int &errorapertura) {
+void GRAFO::actualizar(const std::string &nombrefichero, int &errorapertura) {
   // Limpiamos la memoria dinámica asumida en la carga previa, como en el destructor
   destroy();
   // Leemos del fichero y actualizamos G con nuevas LS y, en su caso, LP
@@ -86,25 +87,25 @@ void GRAFO::actualizar(char nombrefichero[85], int &errorapertura) {
 unsigned GRAFO::Es_dirigido() { return dirigido; }
 
 void GRAFO::Info_Grafo() {
-  cout << endl << "El Grafo cargado actualmente tiene las siguientes características:" << endl;
-  cout << "Nº de Nodos: " << n << endl;
-  cout << "Nº de Arcos: " << m << endl;
-  cout << "¿Grafo Dirigido? " << (dirigido == 1 ? " Si" : " No");
-  cout << endl << endl;
+  std::cout << std::endl << "El Grafo cargado actualmente tiene las siguientes características:" << std::endl;
+  std::cout << "Nº de Nodos: " << n << std::endl;
+  std::cout << "Nº de Arcos: " << m << std::endl;
+  std::cout << "¿Grafo Dirigido? " << (dirigido == 1 ? " Si" : " No");
+  std::cout << std::endl << std::endl;
 }
 
-void Mostrar_Lista(const vector<LA_nodo>& L, unsigned &nodos) {
+void Mostrar_Lista(const std::vector<LA_nodo>& L, unsigned &nodos) {
   for (int i{0}; i < nodos; ++i) {
-    cout << "[" << i + 1 << "]";
+    std::cout << "[" << i + 1 << "]";
     if (L[i].size() == 0)
-      cout << " : NULL";
+      std::cout << " : NULL";
     for (int k{0}; k < L[i].size(); ++k) {
-      cout << " :  " << L[i][k].j + 1 << "(" << L[i][k].c << ") ";
+      std::cout << " :  " << L[i][k].j + 1 << "(" << L[i][k].c << ") ";
     }
-    cout << endl;
+    std::cout << std::endl;
   }
   // cout << L[0][0].j << endl;
-  cout << endl;
+  std::cout << std::endl;
 }
 
 void GRAFO::Mostrar_Listas(int l) {
@@ -114,7 +115,7 @@ void GRAFO::Mostrar_Listas(int l) {
     Mostrar_Lista(LP, n);  // Para Grafos Dirigidos
 }
 
-void GRAFO::dfs_num(unsigned &i, vector<LA_nodo>& L, vector<bool> &visitado, vector<unsigned> &prenum, unsigned &prenum_ind, vector<unsigned> &postnum, unsigned &postnum_ind) {
+void GRAFO::dfs_num(unsigned &i, std::vector<LA_nodo>& L, std::vector<bool> &visitado, std::vector<unsigned> &prenum, unsigned &prenum_ind, std::vector<unsigned> &postnum, unsigned &postnum_ind) {
   visitado[i] = true;
   prenum[prenum_ind++] = i;  // Asignamos el orden de visita prenum que corresponde al nodo i
   for (unsigned j = 0; j < L[i].size(); j++) {
@@ -126,48 +127,47 @@ void GRAFO::dfs_num(unsigned &i, vector<LA_nodo>& L, vector<bool> &visitado, vec
 }
 
 void GRAFO::RecorridoProfundidad() {
-  vector<bool> visitado;
+  std::vector<bool> visitado;
   visitado.resize(n, false);
 
-  vector<unsigned> prenum;
+  std::vector<unsigned> prenum;
   prenum.resize(n, 0);
-  vector<unsigned> postnum;
+  std::vector<unsigned> postnum;
   postnum.resize(n, 0);
 
   unsigned prenum_ind = 0;
   unsigned postnum_ind = 0;
 
   unsigned i;
-  cout << "Elige un nodo de partida [1-" << n << "]: ";
-  cin >> (unsigned &)i;
-  cout << endl;
+  std::cout << "Elige un nodo de partida [1-" << n << "]: ";
+  std::cin >> (unsigned &)i;
+  std::cout << std::endl;
 
   --i;
   dfs_num(i, LS, visitado, prenum, prenum_ind, postnum, postnum_ind);
 
   // Mostrar prenum
-  cout << "Orden de visita de los nodos en preorden\n";
+  std::cout << "Orden de visita de los nodos en preorden\n";
   for (int i{0}; i < prenum_ind; ++i) {
-    cout << '[' << prenum[i] + 1 << ']';
+    std::cout << '[' << prenum[i] + 1 << ']';
     if (!(i + 1 == prenum_ind)) {
-      cout << " -> ";
+      std::cout << " -> ";
     }
   }
-  cout << endl << endl;
+  std::cout << std::endl << std::endl;
   // Mostrar postnum
-  cout << "Orden de visita de los nodos en postorden\n";
+  std::cout << "Orden de visita de los nodos en postorden\n";
   for (int i{0}; i < postnum_ind; ++i) {
-    cout << '[' << postnum[i] + 1 << ']';
+    std::cout << '[' << postnum[i] + 1 << ']';
     if (!(i + 1 == postnum_ind)) {
-      cout << " -> ";
+      std::cout << " -> ";
     }
   }
-  cout << endl << endl;
+  std::cout << std::endl << std::endl;
 }
 
-void GRAFO::bfs_num(unsigned &i, vector<LA_nodo>& L, vector<unsigned> &pred,
-                    vector<int> &d) {
-  vector<bool> visitado;  // Vector de visitados
+void GRAFO::bfs_num(unsigned &i, std::vector<LA_nodo>& L, std::vector<unsigned> &pred, std::vector<int> &d) {
+  std::vector<bool> visitado;  // Vector de visitados
   visitado.resize(n, false);
   visitado[i] = true;
 
@@ -176,7 +176,7 @@ void GRAFO::bfs_num(unsigned &i, vector<LA_nodo>& L, vector<unsigned> &pred,
   pred[i] = i;
   d[i] = 0;
 
-  queue<unsigned> cola;  // Cola de nodos
+  std::queue<unsigned> cola;  // Cola de nodos
   cola.push(i);  // Inicializamos la cola con el nodo inicial
 
   while (!cola.empty()) {
@@ -195,36 +195,36 @@ void GRAFO::bfs_num(unsigned &i, vector<LA_nodo>& L, vector<unsigned> &pred,
 }
 
 void GRAFO::RecorridoAmplitud() {
-  vector<unsigned> pred;  // Vector de nodos predecesores
-  vector<int> d;          // Vector de distancias
+  std::vector<unsigned> pred;  // Vector de nodos predecesores
+  std::vector<int> d;          // Vector de distancias
   unsigned nodo_inicial{0};
 
-  cout << endl << "Elige el nodo inicial en el rango [1 - " << n << "]: ";
-  cin >> nodo_inicial;
+  std::cout << std::endl << "Elige el nodo inicial en el rango [1 - " << n << "]: ";
+  std::cin >> nodo_inicial;
   while (nodo_inicial < 1 || nodo_inicial > n) {
-    cout << "El nodo elegido no está en el rango [1 - " << n << "], elige otro: ";
-    cin >> nodo_inicial;
+    std::cout << "El nodo elegido no está en el rango [1 - " << n << "], elige otro: ";
+    std::cin >> nodo_inicial;
   }
-  cout << "Nodo inicial elegido: [" << nodo_inicial << "]" << endl << endl;
+  std::cout << "Nodo inicial elegido: [" << nodo_inicial << "]" << std::endl << std::endl;
   --nodo_inicial;
   bfs_num(nodo_inicial, LS, pred, d);
-  cout << "Distancia entre el nodo inicial y el resto, expresada en número de arcos:" << endl << endl;
+  std::cout << "Distancia entre el nodo inicial y el resto, expresada en número de arcos:" << std::endl << std::endl;
   for (int i{0}; i < d.size(); ++i) {
-    cout << "[" << i + 1 << "] : " << d[i] << endl;
+    std::cout << "[" << i + 1 << "] : " << d[i] << std::endl;
   }
   // Mostrar los predecesores
-  cout << endl << "Predecesores de cada nodo" << endl << endl;
+  std::cout << std::endl << "Predecesores de cada nodo" << std::endl << std::endl;
   for (int i{0}; i < pred.size(); ++i) {
-    cout << "Predecesor de " << i + 1 << " : " << pred[i] + 1 << endl;
+    std::cout << "Predecesor de " << i + 1 << " : " << pred[i] + 1 << std::endl;
   }
-  cout << endl;
+  std::cout << std::endl;
 }
 
 void GRAFO::kruskal() {
   unsigned q = 0;
   int pesoMST = 0;
   // Cargamos todas las aristas de la lista de adyacencia
-  vector<AristaPesada> Aristas;
+  std::vector<AristaPesada> Aristas;
   Aristas.resize(m);
   unsigned k = 0;
   for (unsigned i = 0; i < n; i++) {
@@ -250,14 +250,14 @@ void GRAFO::kruskal() {
   }
 
   // Inicializamos el registro de componentes conexas: cada nodo está en su propia componente
-  vector<unsigned> Raiz;
+  std::vector<unsigned> Raiz;
   Raiz.resize(n);
   for (unsigned q = 0; q < n; q++) {
     Raiz[q] = q;
   }
 
   // A partir de aquí el código no está en el guion
-  vector<AristaPesada> T;  // Declaro un vector de AristaPesada T
+  std::vector<AristaPesada> T;  // Declaro un vector de AristaPesada T
   int primer_elemento{0};  // Contador para el primer elemento
   int contador{0};         // Contador de aristas añadidas
   AristaPesada arista;     // Declaramos un elemento arista de tipo AristaPesada
@@ -280,45 +280,45 @@ void GRAFO::kruskal() {
   }
 
   if (contador != (n - 1)) {
-    cout << "Grafo no conexo. No tiene árbol generador." << endl << endl;
+    std::cout << "Grafo no conexo. No tiene árbol generador." << std::endl << std::endl;
   }
   else {
     for (int i{0}; i < T.size(); ++i) {
-      cout << "Arista número " << i + 1 << " incorporada: (" << T[i].extremo1 + 1 << "," << T[i].extremo2 + 1 << "), con peso " << T[i].peso << endl;
+      std::cout << "Arista número " << i + 1 << " incorporada: (" << T[i].extremo1 + 1 << "," << T[i].extremo2 + 1 << "), con peso " << T[i].peso << std::endl;
     }
-    cout << endl << "El peso del árbol generador de mínimo coste es: " << pesoMST << endl << endl;
+    std::cout << std::endl << "El peso del árbol generador de mínimo coste es: " << pesoMST << std::endl << std::endl;
   }
 }
 
-void GRAFO::mostrarcamino(unsigned s, int i, const vector<unsigned>& pred) {
+void GRAFO::mostrarcamino(unsigned s, int i, const std::vector<unsigned>& pred) {
   if (pred[i] == UERROR) {
-    cout << "No hay camino desde el nodo " << s + 1 << " hasta el nodo " << i + 1;
+    std::cout << "No hay camino desde el nodo " << s + 1 << " hasta el nodo " << i + 1;
     return;
   }
   if (i != s) {
     mostrarcamino(s, pred[i], pred);
-    cout << " -> " << i + 1;
+    std::cout << " -> " << i + 1;
   }
   else {
-    cout << i + 1;
+    std::cout << i + 1;
     return;
   }
 }
 
 void GRAFO::PDM() {
-  deque<unsigned> dcola;
-  vector<int> d;
-  vector<unsigned> pred;
-  vector<bool> Encola;
+  std::deque<unsigned> dcola;
+  std::vector<int> d;
+  std::vector<unsigned> pred;
+  std::vector<bool> Encola;
   unsigned s;
 
   Encola.resize(n, false);
   d.resize(n, maxint);
   pred.resize(n, UERROR);
 
-  cout << "Escoja nodo de partida: (1 - " << n << ") " << endl;
-  cin >> s;
-  cout << endl;
+  std::cout << "Escoja nodo de partida: (1 - " << n << ") " << std::endl;
+  std::cin >> s;
+  std::cout << std::endl;
   s--;
   d[s] = 0;
   pred[s] = s;
@@ -346,21 +346,21 @@ void GRAFO::PDM() {
       }
     }
   }
-  cout << "soluciones: \n\n";
+  std::cout << "soluciones: \n\n";
   for (unsigned i{0}; i < n; ++i) {
-    cout << "Nodo" << i + 1 << ": ";
+    std::cout << "Nodo" << i + 1 << ": ";
     mostrarcamino(s, i, pred);
-    cout << ". Distancia: " << d[i];
-    cout << endl << endl;
+    std::cout << ". Distancia: " << d[i];
+    std::cout << std::endl << std::endl;
   }
 }
 
-void GRAFO::dfs_cc(unsigned i, vector<bool> &visitado) {     // Recorrido en profundidad para calcular componentes conexas
+void GRAFO::dfs_cc(unsigned i, std::vector<bool> &visitado) {     // Recorrido en profundidad para calcular componentes conexas
   visitado[i] = true;
-  cout << i + 1;
+  std::cout << i + 1;
   for (unsigned j{0}; j < LS[i].size(); ++j) {
     if (!visitado[LS[i][j].j]) {
-      cout << ", ";
+      std::cout << ", ";
       dfs_cc(LS[i][j].j, visitado);
     }
   }
@@ -368,7 +368,7 @@ void GRAFO::dfs_cc(unsigned i, vector<bool> &visitado) {     // Recorrido en pro
 
 void GRAFO::ComponentesConexas() {        // metodo para imprimir las componentes conexas y llamar a dfs_cc
   unsigned componentesconexas{0};
-  vector<bool> visitado;
+  std::vector<bool> visitado;
   visitado.resize(n,false);
   for (int i{0}; i < n; ++i) {
     if (!visitado[i]) {
@@ -378,4 +378,56 @@ void GRAFO::ComponentesConexas() {        // metodo para imprimir las componente
       std::cout << " }" << std::endl;
     }
   }  
+}
+
+
+void GRAFO::ComponentesFuertementeConexas() {
+  unsigned i, postnum_ind , componentesfuertementeconexas = 0;
+  std::vector<bool> visitado;
+  std::vector<unsigned> postnum;
+  visitado.resize(n, false);
+  postnum.resize(n, UERROR);
+  postnum_ind = n - 1;
+  i = 0;
+  while (i < n) {
+    if (!visitado[i]) {
+      dfs_postnum(i, visitado, postnum, postnum_ind);
+    }
+    ++i;
+  }
+  visitado.assign(n, false);
+  i = 0;
+  while (i < n) {
+    if (!visitado[postnum[i]]) {
+      componentesfuertementeconexas++;
+      std::cout << "Componente Fuertemente Conexa" << componentesfuertementeconexas << ":{";
+      dfs_cfc(postnum[i], visitado);
+      std::cout << "}" << std::endl << std::endl;
+    }
+    ++i;
+  }
+}
+
+
+
+void GRAFO::dfs_postnum(unsigned i, std::vector<bool> &visitado, std::vector<unsigned> &postnum, unsigned &postnum_ind) {
+  visitado[i] = true;
+  for (int j{0}; j < LS[i].size(); ++j) {
+    if (!visitado[LS[i][j].j]) {
+      dfs_postnum(LS[i][j].j, visitado, postnum, postnum_ind);
+    }
+  }
+  postnum[postnum_ind--] = i;
+}
+
+
+void GRAFO::dfs_cfc(unsigned i, std::vector<bool> &visitado) {
+  visitado[i] = true;
+  std::cout << i + 1;
+  for (unsigned j{0}; j < LP[i].size(); ++j) {
+    if (!visitado[LP[i][j].j]) {
+      std::cout << ", ";
+      dfs_cfc(LP[i][j].j, visitado);
+    }
+  }
 }
